@@ -21,6 +21,6 @@ long int Node_count(struct Node * node);
 
 long int Node_ids(struct Node * node, long int index);
 
-void Node_connect(char unitSizeInBytes, char * path, struct Node * fromNode, long int toNodeId);
+void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId);
 
 #endif

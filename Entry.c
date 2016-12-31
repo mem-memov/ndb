@@ -31,7 +31,7 @@ struct Entry * Entry_create(struct File * file)
 {
     struct Entry * entry = Entry_construct();
 
-    File_openForAppending(file);
+    File_open(file);
     File_seekEnd(file);
 
     long int outsidePosition = File_position(file);
@@ -90,4 +90,25 @@ long int Entry_outsides(struct Entry * entry, long int index)
     }
 
     // error getting entry
+}
+
+void Entry_connect(struct Entry * entry, struct File * file, long int toNodeId)
+{
+    if (NULL != entry->next) {
+        Entry_connect(entry->next, file, toNodeId);
+    }
+
+    // create new entry
+
+    File_open(file);
+    File_seekEnd(file);
+
+    entry->outside = Link_create(file, toNodeId);
+    entry->inside = Link_create(file, 0);
+
+    File_close(file);
+
+    // connect last node entry with the new one
+
+
 }

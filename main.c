@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
         long int toNodeId = strtol(argv[3], NULL, 10);
         struct File * file = File_construct(path, unitSizeInBytes);
         struct Node * fromNode = Node_read(file, toNodeId);
-        Node_connect(unitSizeInBytes, path, fromNode, toNodeId);
+        Node_connect(fromNode, file, toNodeId);
         Node_destruct(fromNode);
         File_destruct(file);
         return(0);

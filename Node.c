@@ -36,7 +36,7 @@ struct Node * Node_read(struct File * file, long int id)
 {
     struct Node * node = Node_construct();
 
-    File_openForReading(file);
+    File_open(file);
 
     node->head = Entry_read(file, id);
 
@@ -55,7 +55,7 @@ long int Node_ids(struct Node * node, long int index)
     return Entry_outsides(node->head, index + 1);
 }
 
-void Node_connect(char unitSizeInBytes, char * path, struct Node * fromNode, long int toNodeId)
+void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)
 {
-
+    Entry_connect(fromNode->head, file, toNodeId);
 }

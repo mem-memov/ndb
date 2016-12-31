@@ -14,10 +14,6 @@ struct File * File_construct(char * path, char unitSizeInBytes)
 
 	file->resource = NULL;
 
-    file->isAppending = 0;
-    file->isReading = 0;
-    file->isInserting = 0;
-
 	return file;
 }
 
@@ -25,65 +21,52 @@ void File_destruct(struct File * file)
 {
 	if (NULL != file->resource) {
         // error: resource not closed
+        exit(1);
 	}
 
 	free(file->path);
 	free(file);
 }
 
-void File_openForAppending(struct File * file)
+void File_open(struct File * file)
 {
 	if (NULL != file->resource) {
         // error: resource already open
+        exit(1);
 	}
 
-    file->resource = fopen(file->path, "a+b");
+    file->resource = fopen(file->path, "rb+");
+
+    // possibly file doesn't exist, let's create it
+    if (NULL == file->resource) {
+        file->resource = fopen(file->path, "ab+");
+        fclose(file->resource);
+        file->resource = fopen(file->path, "rb+");
+    }
 
     if (NULL == file->resource) {
         // error opening file
+        exit(1);
     }
-
-    file->isAppending = 1;
-    file->isReading = 0;
-    file->isInserting = 0;
-}
-
-void File_openForReading(struct File * file)
-{
-	if (NULL != file->resource) {
-        // error: resource already open
-	}
-
-    file->resource = fopen(file->path, "rb");
-
-    if (NULL == file->resource) {
-        // error opening file
-    }
-
-    file->isAppending = 0;
-    file->isReading = 1;
-    file->isInserting = 0;
 }
 
 void File_close(struct File * file)
 {
 	if (NULL == file->resource) {
         // error: resource not open
+        exit(1);
 	}
 
     fclose(file->resource);
 
     file->resource = NULL;
-
-    file->isAppending = 0;
-    file->isReading = 0;
-    file->isInserting = 0;
 }
 
 void File_seekEnd(struct File * file)
 {
 	if (NULL == file->resource) {
         // error: resource not open
+        exit(1);
 	}
 
 	fseek(file->resource, 0, SEEK_END);
@@ -93,6 +76,7 @@ void File_seekPosition(struct File * file, long int position)
 {
 	if (NULL == file->resource) {
         // error: resource not open
+        exit(1);
 	}
 
     fseek(file->resource, position, SEEK_SET);
@@ -102,6 +86,7 @@ long int File_position(struct File * file)
 {
 	if (NULL == file->resource) {
         // error: resource not open
+        exit(1);
 	}
 
     return ftell(file->resource);
@@ -109,10 +94,6 @@ long int File_position(struct File * file)
 
 void File_appendByte(struct File * file, char byte)
 {
-    if (0 == file->isAppending) {
-        // error: file is open in wrong mode
-    }
-
     fwrite(&byte, sizeof(char), 1, file->resource);
 }
 

@@ -7,18 +7,13 @@ struct File {
     char * path;
     char unitSizeInBytes;
     FILE * resource;
-    char isAppending;
-    char isReading;
-    char isInserting;
 };
 
 struct File * File_construct(char * path, char unitSizeInBytes);
 
 void File_destruct(struct File * file);
 
-void File_openForAppending(struct File * file);
-
-void File_openForReading(struct File * file);
+void File_open(struct File * file);
 
 void File_close(struct File * file);
 

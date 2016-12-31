@@ -23,4 +23,6 @@ long int Entry_count(struct Entry * entry);
 
 long int Entry_outsides(struct Entry * entry, long int index);
 
+void Entry_connect(struct Entry * entry, struct File * file, long int toNodeId);
+
 #endif
