@@ -12,3 +12,5 @@ void Link_destruct(struct Link * link);
 struct Link * Link_create(char unitSizeInBytes, FILE * fileResource, long int destination);
 
 long int Link_destination(struct Link * link);
+
+struct Link * Link_read(char unitSizeInBytes, FILE * fileResource, long int position);

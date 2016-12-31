@@ -60,3 +60,13 @@ long int Unit_value(struct Unit * unit)
 
     return value;
 }
+
+struct Unit * Unit_read(char length, FILE * fileResource, long int position)
+{
+    struct Unit * unit = Unit_construct(length);
+
+    fseek(fileResource, position, SEEK_SET);
+    fread(unit->bytes, 1, unit->length, fileResource);
+
+    return unit;
+}

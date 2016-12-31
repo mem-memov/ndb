@@ -9,6 +9,7 @@ struct Entry * Entry_construct()
 
 	entry->inside = NULL;
 	entry->outside = NULL;
+	entry->next = NULL;
 
 	return entry;
 }
@@ -53,4 +54,45 @@ struct Entry * Entry_create(char unitSizeInBytes, char * path)
 long int Entry_outside(struct Entry * entry)
 {
     return Link_destination(entry->outside);
+}
+
+struct Entry * Entry_read(char unitSizeInBytes, FILE * fileResource, long int outsideDestination)
+{
+    struct Entry * entry = Entry_construct();
+
+    long int outsidePosition = (outsideDestination - 1) * unitSizeInBytes;
+    long int insidePosition = outsidePosition + unitSizeInBytes;
+
+    entry->outside = Link_read(unitSizeInBytes, fileResource, outsidePosition);
+    entry->inside = Link_read(unitSizeInBytes, fileResource, insidePosition);
+
+    long int insideDestination = Link_destination(entry->inside);
+
+    if (0 != insideDestination) {
+        entry->next = Entry_read(unitSizeInBytes, fileResource, insideDestination);
+    }
+
+    return entry;
+}
+
+long int Entry_count(struct Entry * entry)
+{
+    if (NULL != entry->next) {
+        return 1 + Entry_count(entry->next);
+    }
+
+    return 1;
+}
+
+long int Entry_outsides(struct Entry * entry, long int index)
+{
+    if (0 == index) {
+        return Entry_outside(entry);
+    }
+
+    if (NULL != entry->next) {
+        return Entry_outsides(entry->next, index-1);
+    }
+
+    // error getting entry
 }

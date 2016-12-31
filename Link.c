@@ -45,3 +45,13 @@ long int Link_destination(struct Link * link)
 {
     return Unit_value(link->destination);
 }
+
+struct Link * Link_read(char unitSizeInBytes, FILE * fileResource, long int position)
+{
+    struct Link * link = Link_construct();
+
+    link->position = Unit_create(unitSizeInBytes, position);
+    link->destination = Unit_read(unitSizeInBytes, fileResource, position);
+
+    return link;
+}
