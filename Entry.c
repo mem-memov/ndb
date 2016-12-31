@@ -1,7 +1,7 @@
 #include "Entry.h"
-#include "Link.c"
+#include "Link.h"
+#include "File.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 struct Entry * Entry_construct()
 {
@@ -27,26 +27,21 @@ void Entry_destruct(struct Entry * entry)
 	free(entry);
 }
 
-struct Entry * Entry_create(char unitSizeInBytes, char * path)
+struct Entry * Entry_create(struct File * file)
 {
     struct Entry * entry = Entry_construct();
 
-    FILE * fileResource = fopen(path, "a+b");
+    File_openForAppending(file);
+    File_seekEnd(file);
 
-    if (NULL == fileResource) {
-        // error opening file
-    }
-
-    fseek(fileResource, 0, SEEK_END);
-
-    long int outsidePosition = ftell(fileResource);
-    long int outsideDestination = (outsidePosition / unitSizeInBytes) + 1;
+    long int outsidePosition = File_position(file);
+    long int outsideDestination = (outsidePosition / File_unitSizeInBytes(file)) + 1;
     long int insideDestination = 0;
 
-    entry->outside = Link_create(unitSizeInBytes, fileResource, outsideDestination);
-    entry->inside = Link_create(unitSizeInBytes, fileResource, insideDestination);
+    entry->outside = Link_create(file, outsideDestination);
+    entry->inside = Link_create(file, insideDestination);
 
-    fclose(fileResource);
+    File_close(file);
 
     return entry;
 }
@@ -56,20 +51,20 @@ long int Entry_outside(struct Entry * entry)
     return Link_destination(entry->outside);
 }
 
-struct Entry * Entry_read(char unitSizeInBytes, FILE * fileResource, long int outsideDestination)
+struct Entry * Entry_read(struct File * file, long int outsideDestination)
 {
     struct Entry * entry = Entry_construct();
 
-    long int outsidePosition = (outsideDestination - 1) * unitSizeInBytes;
-    long int insidePosition = outsidePosition + unitSizeInBytes;
+    long int outsidePosition = (outsideDestination - 1) * File_unitSizeInBytes(file);
+    long int insidePosition = outsidePosition + File_unitSizeInBytes(file);
 
-    entry->outside = Link_read(unitSizeInBytes, fileResource, outsidePosition);
-    entry->inside = Link_read(unitSizeInBytes, fileResource, insidePosition);
+    entry->outside = Link_read(file, outsidePosition);
+    entry->inside = Link_read(file, insidePosition);
 
     long int insideDestination = Link_destination(entry->inside);
 
     if (0 != insideDestination) {
-        entry->next = Entry_read(unitSizeInBytes, fileResource, insideDestination);
+        entry->next = Entry_read(file, insideDestination);
     }
 
     return entry;

@@ -1,6 +1,6 @@
 #include "Link.h"
-#include "Unit.c"
-#include <stdio.h>
+#include "Unit.h"
+#include "File.h"
 #include <stdlib.h>
 
 struct Link * Link_construct()
@@ -26,17 +26,17 @@ void Link_destruct(struct Link * link)
 	free(link);
 }
 
-struct Link * Link_create(char unitSizeInBytes, FILE * fileResource, long int destination)
+struct Link * Link_create(struct File * file, long int destination)
 {
     struct Link * link = Link_construct();
 
-    fseek(fileResource, 0, SEEK_END);
-    long int position = ftell(fileResource);
+    File_seekEnd(file);
+    long int position = File_position(file);
 
-    link->position = Unit_create(unitSizeInBytes, position);
-    link->destination = Unit_create(unitSizeInBytes, destination);
+    link->position = Unit_create(File_unitSizeInBytes(file), position);
+    link->destination = Unit_create(File_unitSizeInBytes(file), destination);
 
-    Unit_write(link->destination, fileResource);
+    Unit_write(link->destination, file);
 
     return link;
 }
@@ -46,12 +46,12 @@ long int Link_destination(struct Link * link)
     return Unit_value(link->destination);
 }
 
-struct Link * Link_read(char unitSizeInBytes, FILE * fileResource, long int position)
+struct Link * Link_read(struct File * file, long int position)
 {
     struct Link * link = Link_construct();
 
-    link->position = Unit_create(unitSizeInBytes, position);
-    link->destination = Unit_read(unitSizeInBytes, fileResource, position);
+    link->position = Unit_create(File_unitSizeInBytes(file), position);
+    link->destination = Unit_read(file, position);
 
     return link;
 }

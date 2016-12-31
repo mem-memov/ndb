@@ -1,6 +1,6 @@
 #include "Unit.h"
+#include "File.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 struct Unit * Unit_construct(char length)
 {
@@ -37,13 +37,11 @@ struct Unit * Unit_create(char length, long int value)
     return unit;
 }
 
-void Unit_write(struct Unit * unit, FILE * fileResource)
+void Unit_write(struct Unit * unit, struct File * file)
 {
     char i;
-    char byte;
     for (i = 0; i < unit->length; i++) {
-        byte = unit->bytes[i];
-        fwrite(&byte, sizeof(char), 1, fileResource);
+        File_appendByte(file, unit->bytes[i]);
     };
 }
 
@@ -61,12 +59,12 @@ long int Unit_value(struct Unit * unit)
     return value;
 }
 
-struct Unit * Unit_read(char length, FILE * fileResource, long int position)
+struct Unit * Unit_read(struct File * file, long int position)
 {
-    struct Unit * unit = Unit_construct(length);
+    struct Unit * unit = Unit_construct(File_unitSizeInBytes(file));
 
-    fseek(fileResource, position, SEEK_SET);
-    fread(unit->bytes, 1, unit->length, fileResource);
+    File_seekPosition(file, position);
+    File_readBytes(file, unit->bytes, unit->length);
 
     return unit;
 }
