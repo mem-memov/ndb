@@ -11,9 +11,11 @@ int main(int argc, char *argv[])
 
     if (1 == argc) {
         struct File * file = File_construct(path, unitSizeInBytes);
+        File_open(file);
         struct Node * node = Node_create(file);
         printf("%ld", Node_id(node));
         Node_destruct(node);
+        File_close(file);
         File_destruct(file);
         return(0);
     }
@@ -21,6 +23,7 @@ int main(int argc, char *argv[])
     if (2 == argc) {
         long int nodeId = strtol(argv[1], NULL, 10);
         struct File * file = File_construct(path, unitSizeInBytes);
+        File_open(file);
         struct Node * node = Node_read(file, nodeId);
         long int externalNodeCount = Node_count(node);
         long int i;
@@ -28,6 +31,7 @@ int main(int argc, char *argv[])
             printf("%ld ", Node_ids(node, i));
         }
         Node_destruct(node);
+        File_close(file);
         File_destruct(file);
         return(0);
     }
@@ -36,9 +40,11 @@ int main(int argc, char *argv[])
         long int fromNodeId = strtol(argv[1], NULL, 10);
         long int toNodeId = strtol(argv[2], NULL, 10);
         struct File * file = File_construct(path, unitSizeInBytes);
+        File_open(file);
         struct Node * fromNode = Node_read(file, fromNodeId);
         Node_connect(fromNode, file, toNodeId);
         Node_destruct(fromNode);
+        File_close(file);
         File_destruct(file);
         return(0);
     }
