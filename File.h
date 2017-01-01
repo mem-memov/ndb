@@ -25,6 +25,10 @@ void File_writeBytes(struct File * file, char * bytes, long int position);
 
 void File_readBytes(struct File * file, char * buffer, long int position);
 
+long int File_read(struct File * file, long int position);
+
+long int File_write(struct File * file, long int position, long int destination);
+
 long int File_newPosition(struct File * file);
 
 #endif

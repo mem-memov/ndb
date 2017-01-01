@@ -1,5 +1,4 @@
 #include "Link.h"
-#include "Unit.h"
 #include "File.h"
 #include <stdlib.h>
 
@@ -7,22 +6,14 @@ struct Link * Link_construct()
 {
 	struct Link * link = malloc(sizeof(struct Link));
 
-	link->positionUnit = NULL;
-	link->destinationUnit = NULL;
+	link->position = 0;
+	link->destination = 0;
 
 	return link;
 }
 
 void Link_destruct(struct Link * link)
 {
-	if (NULL != link->positionUnit) {
-		Unit_destruct(link->positionUnit);
-	}
-
-	if (NULL != link->destinationUnit) {
-		Unit_destruct(link->destinationUnit);
-	}
-
 	free(link);
 }
 
@@ -30,54 +21,49 @@ struct Link * Link_create(struct File * file, long int destination)
 {
     struct Link * link = Link_construct();
 
-    long int newPosition = File_newPosition(file);
+    link->position = File_newPosition(file);
+    link->destination = destination;
 
-    link->positionUnit = Unit_create(File_unitSizeInBytes(file), newPosition);
-    link->destinationUnit = Unit_create(File_unitSizeInBytes(file), destination);
-
-    Unit_write(link->destinationUnit, file, Unit_value(link->positionUnit));
+    File_write(file, link->position, link->destination);
 
     return link;
 }
 
 long int Link_position(struct Link * link)
 {
-    return Unit_value(link->positionUnit);
+    return link->position;
 }
 
 long int Link_destination(struct Link * link)
 {
-    return Unit_value(link->destinationUnit);
+    return link->destination;
 }
 
 struct Link * Link_read(struct File * file, long int position)
 {
     struct Link * link = Link_construct();
 
-    link->positionUnit = Unit_create(File_unitSizeInBytes(file), position);
-    link->destinationUnit = Unit_read(file, position);
+    link->position = position;
+    link->destination = File_read(file, position);
 
     return link;
 }
 
 void Link_update(struct Link * link, struct File * file, long int destination)
 {
-    if (0 != Unit_value(link->destinationUnit)) {
+    if (0 != link->destination) {
         // error updating link - link not empty
         exit(1);
     }
 
-    struct Unit * oldDestinationUnit = link->destinationUnit;
-    struct Unit * newDestinationUnit = Unit_create(File_unitSizeInBytes(file), destination);
+    long int oldDestination = link->destination;
+    link->destination = destination;
 
-    link->destinationUnit = newDestinationUnit;
-    Unit_destruct(oldDestinationUnit);
+    File_write(file, link->position, link->destination);
 
-    Unit_write(link->destinationUnit, file, Unit_value(link->positionUnit));
+    long int actualDestination = File_read(file, link->position);
 
-    struct Unit * actualDestinationUnit = Unit_read(file, Unit_value(link->positionUnit));
-
-    if (Unit_value(link->destinationUnit) != Unit_value(actualDestinationUnit)) {
+    if (link->destination != actualDestination) {
         // error: link write race - need to delete created entry
         exit(1);
     }

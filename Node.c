@@ -1,7 +1,6 @@
 #include "Node.h"
 #include "Entry.h"
 #include "File.h"
-#include "Unit.h"
 #include <stdlib.h>
 
 struct Node * Node_construct()
@@ -44,7 +43,10 @@ struct Node * Node_read(struct File * file, long int id)
 {
     File_open(file);
 
-    Unit_checkNodeId(file, id);
+    if (File_read(file, id) != id) {
+        // error: not node id
+        exit(1);
+    }
 
     struct Node * node = Node_construct();
 
@@ -69,7 +71,10 @@ void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)
 {
     File_open(file);
 
-    Unit_checkNodeId(file, toNodeId);
+    if (File_read(file, toNodeId) != toNodeId) {
+        // error: not node id
+        exit(1);
+    }
 
     struct Entry * newEntry = Entry_create(file, toNodeId);
     struct Entry * lastEntry = Entry_tail(fromNode->headEntry);
