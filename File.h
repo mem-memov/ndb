@@ -27,4 +27,6 @@ long int File_write(struct File * file, long int position, long int destination)
 
 long int File_newPosition(struct File * file);
 
+void File_checkNodeId(struct File * file, long int nodeId);
+
 #endif

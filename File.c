@@ -129,3 +129,11 @@ long int File_newPosition(struct File * file)
 
     return Address_position(file->address, byteAddress);
 }
+
+void File_checkNodeId(struct File * file, long int nodeId)
+{
+    if (File_read(file, nodeId) != nodeId) {
+        // error: not node id
+        exit(1);
+    }
+}

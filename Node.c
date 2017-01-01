@@ -43,10 +43,7 @@ struct Node * Node_read(struct File * file, long int id)
 {
     File_open(file);
 
-    if (File_read(file, id) != id) {
-        // error: not node id
-        exit(1);
-    }
+    File_checkNodeId(file, id);
 
     struct Node * node = Node_construct();
 
@@ -71,10 +68,7 @@ void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)
 {
     File_open(file);
 
-    if (File_read(file, toNodeId) != toNodeId) {
-        // error: not node id
-        exit(1);
-    }
+    File_checkNodeId(file, toNodeId);
 
     struct Entry * newEntry = Entry_create(file, toNodeId);
     struct Entry * lastEntry = Entry_tail(fromNode->headEntry);
