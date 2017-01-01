@@ -57,7 +57,10 @@ void File_open(struct File * file)
         file->resource = fopen(file->path, "rb+");
     } else {
         // otherwise check unitsize
-
+        if (1 != File_read(file, 0)) {
+            // error: wrong file format
+            exit(1);
+        }
     }
 
     if (NULL == file->resource) {
@@ -76,24 +79,6 @@ void File_close(struct File * file)
     fclose(file->resource);
 
     file->resource = NULL;
-}
-
-void File_writeBytes(struct File * file, char * bytes, long int position)
-{
-	long int byteAddress = Address_byteAddress(file->address, position);
-
-    fseek(file->resource, byteAddress, SEEK_SET);
-
-    fwrite(bytes, sizeof(char), file->unitSizeInBytes, file->resource);
-}
-
-void File_readBytes(struct File * file, char * buffer, long int position)
-{
-	long int byteAddress = Address_byteAddress(file->address, position);
-
-    fseek(file->resource, byteAddress, SEEK_SET);
-
-    fread(buffer, 1, file->unitSizeInBytes, file->resource);
 }
 
 long int File_read(struct File * file, long int position)
