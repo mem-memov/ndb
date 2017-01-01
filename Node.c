@@ -3,6 +3,8 @@
 #include "File.h"
 #include <stdlib.h>
 
+#include <stdio.h>
+
 struct Node * Node_construct()
 {
 	struct Node * node = malloc(sizeof(struct Node));
@@ -69,6 +71,7 @@ void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)
     struct Entry * newEntry = Entry_create(file, toNodeId);
     struct Entry * lastEntry = Entry_tail(fromNode->head);
 
+    printf("%ld -> %ld\n", Entry_position(lastEntry), Entry_position(newEntry));
     Entry_update(lastEntry, file, Entry_position(newEntry));
 
     File_close(file);

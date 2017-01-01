@@ -21,7 +21,7 @@ long int Entry_outside(struct Entry * entry);
 
 long int Entry_position(struct Entry * entry);
 
-struct Entry * Entry_read(struct File * file, long int outsideDestination);
+struct Entry * Entry_read(struct File * file, long int position);
 
 long int Entry_count(struct Entry * entry);
 

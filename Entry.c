@@ -54,15 +54,12 @@ long int Entry_position(struct Entry * entry)
     return Link_position(entry->outside);
 }
 
-struct Entry * Entry_read(struct File * file, long int outsideDestination)
+struct Entry * Entry_read(struct File * file, long int position)
 {
     struct Entry * entry = Entry_construct();
 
-    long int outsidePosition = (outsideDestination - 1) * File_unitSizeInBytes(file);
-    long int insidePosition = outsidePosition + File_unitSizeInBytes(file);
-
-    entry->outside = Link_read(file, outsidePosition);
-    entry->inside = Link_read(file, insidePosition);
+    entry->outside = Link_read(file, position);
+    entry->inside = Link_read(file, position + 1);
 
     long int insideDestination = Link_destination(entry->inside);
 
