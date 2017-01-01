@@ -41,11 +41,7 @@ struct Entry * Entry_create(struct File * file, long int outsideDestination)
 
 void Entry_update(struct Entry * entry, struct File * file, long int insideDestination)
 {
-    File_open(file);
-
     Link_update(entry->inside, file, insideDestination);
-
-    File_close(file);
 }
 
 long int Entry_outside(struct Entry * entry)
