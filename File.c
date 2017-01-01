@@ -1,4 +1,5 @@
 #include "File.h"
+#include "Address.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -10,9 +11,15 @@ struct File * File_construct(char * path, char unitSizeInBytes)
 	file->path = malloc(strlen(path)+1);
 	strcpy(file->path, path);
 
+    if (0 == unitSizeInBytes) {
+        // error: units of no length
+        exit(1);
+    }
 	file->unitSizeInBytes = unitSizeInBytes;
 
 	file->resource = NULL;
+
+	file->address = Address_construct(unitSizeInBytes);
 
 	return file;
 }
@@ -24,8 +31,14 @@ void File_destruct(struct File * file)
         exit(1);
 	}
 
+	Address_destruct(file->address);
 	free(file->path);
 	free(file);
+}
+
+char File_unitSizeInBytes(struct File * file)
+{
+    return file->unitSizeInBytes;
 }
 
 void File_open(struct File * file)
@@ -62,47 +75,33 @@ void File_close(struct File * file)
     file->resource = NULL;
 }
 
-void File_seekEnd(struct File * file)
+void File_writeBytes(struct File * file, char * bytes, long int position)
+{
+	long int byteAddress = Address_byteAddress(file->address, position);
+
+    fseek(file->resource, byteAddress, SEEK_SET);
+
+    fwrite(bytes, sizeof(char), file->unitSizeInBytes, file->resource);
+}
+
+void File_readBytes(struct File * file, char * buffer, long int position)
+{
+	long int byteAddress = Address_byteAddress(file->address, position);
+
+    fseek(file->resource, byteAddress, SEEK_SET);
+
+    fread(buffer, 1, file->unitSizeInBytes, file->resource);
+}
+
+long int File_newPosition(struct File * file)
 {
 	if (NULL == file->resource) {
         // error: resource not open
         exit(1);
 	}
 
-	fseek(file->resource, 0, SEEK_END);
-}
+    fseek(file->resource, 0, SEEK_END);
+    long int byteAddress = ftell(file->resource);
 
-void File_seekPosition(struct File * file, long int position)
-{
-	if (NULL == file->resource) {
-        // error: resource not open
-        exit(1);
-	}
-
-    fseek(file->resource, position, SEEK_SET);
-}
-
-long int File_position(struct File * file)
-{
-	if (NULL == file->resource) {
-        // error: resource not open
-        exit(1);
-	}
-
-    return ftell(file->resource);
-}
-
-void File_appendByte(struct File * file, char byte)
-{
-    fwrite(&byte, sizeof(char), 1, file->resource);
-}
-
-void File_readBytes(struct File * file, char * buffer, char length)
-{
-    fread(buffer, 1, length, file->resource);
-}
-
-char File_unitSizeInBytes(struct File * file)
-{
-    return file->unitSizeInBytes;
+    return Address_position(file->address, byteAddress);
 }

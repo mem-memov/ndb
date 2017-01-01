@@ -30,15 +30,19 @@ struct Link * Link_create(struct File * file, long int destination)
 {
     struct Link * link = Link_construct();
 
-    File_seekEnd(file);
-    long int position = File_position(file);
+    long int newPosition = File_newPosition(file);
 
-    link->position = Unit_create(File_unitSizeInBytes(file), position);
+    link->position = Unit_create(File_unitSizeInBytes(file), newPosition);
     link->destination = Unit_create(File_unitSizeInBytes(file), destination);
 
-    Unit_write(link->destination, file);
+    Unit_write(link->destination, file, Unit_value(link->position));
 
     return link;
+}
+
+long int Link_position(struct Link * link)
+{
+    return Unit_value(link->position);
 }
 
 long int Link_destination(struct Link * link)
@@ -54,4 +58,9 @@ struct Link * Link_read(struct File * file, long int position)
     link->destination = Unit_read(file, position);
 
     return link;
+}
+
+void Link_update(struct Link * link, struct File * file, long int destination)
+{
+    Unit_write(link->destination, file, Unit_value(link->position));
 }

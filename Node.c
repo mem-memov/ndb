@@ -23,7 +23,14 @@ void Node_destruct(struct Node * node)
 struct Node * Node_create(struct File * file)
 {
 	struct Node * node = Node_construct();
-	node->head = Entry_create(file);
+
+    File_open(file);
+
+    long int id = File_newPosition(file);
+	node->head = Entry_create(file, id);
+
+    File_close(file);
+
 	return node;
 }
 
@@ -57,5 +64,12 @@ long int Node_ids(struct Node * node, long int index)
 
 void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)
 {
-    Entry_connect(fromNode->head, file, toNodeId);
+    File_open(file);
+
+    struct Entry * newEntry = Entry_create(file, toNodeId);
+    struct Entry * lastEntry = Entry_tail(fromNode->head);
+
+    Entry_update(lastEntry, file, Entry_position(newEntry));
+
+    File_close(file);
 }

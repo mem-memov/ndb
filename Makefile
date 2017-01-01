@@ -1,11 +1,14 @@
-ndb: main.o File.o Node.o Entry.o Link.o Unit.o
-	gcc main.o File.o Node.o Entry.o Link.o Unit.o -o ndb
+ndb: main.o File.o Address.o Node.o Entry.o Link.o Unit.o
+	gcc main.o File.o Address.o Node.o Entry.o Link.o Unit.o -o ndb
 
 main.o: main.c Node.h File.h
 	gcc -c main.c
 
-File.o: File.c File.h
+File.o: File.c File.h Address.h
 	gcc -c File.c
+
+Address.o: Address.c Address.h
+	gcc -c Address.c
 
 Node.o: Node.c Node.h Entry.h File.h
 	gcc -c Node.c
@@ -22,10 +25,3 @@ Unit.o: Unit.c Unit.h File.h
 clean:
 	rm *.o ndb
 
-test:	File.o Node.o Entry.o Link.o Unit.o
-	gcc FileTest.c -o FileTest && ./FileTest
-	gcc NodeTest.c -o NodeTest && ./NodeTest
-	gcc EntryTest.c -o EntryTest && ./EntryTest
-	gcc LinkTest.c -o LinkTest && ./LinkTest
-	gcc UnitTest.c -o UnitTest && ./UnitTest
-	rm *Test

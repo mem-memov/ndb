@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
     }
 
     if (3 == argc) {
-        long int fromNodeId = strtol(argv[2], NULL, 10);
-        long int toNodeId = strtol(argv[3], NULL, 10);
+        long int fromNodeId = strtol(argv[1], NULL, 10);
+        long int toNodeId = strtol(argv[2], NULL, 10);
         struct File * file = File_construct(path, unitSizeInBytes);
         struct Node * fromNode = Node_read(file, toNodeId);
         Node_connect(fromNode, file, toNodeId);

@@ -3,6 +3,8 @@
 #include "File.h"
 #include <stdlib.h>
 
+#include <stdio.h>
+
 struct Entry * Entry_construct()
 {
 	struct Entry * entry = malloc(sizeof(struct Entry));
@@ -27,28 +29,33 @@ void Entry_destruct(struct Entry * entry)
 	free(entry);
 }
 
-struct Entry * Entry_create(struct File * file)
+struct Entry * Entry_create(struct File * file, long int outsideDestination)
 {
     struct Entry * entry = Entry_construct();
 
-    File_open(file);
-    File_seekEnd(file);
-
-    long int outsidePosition = File_position(file);
-    long int outsideDestination = (outsidePosition / File_unitSizeInBytes(file)) + 1;
-    long int insideDestination = 0;
-
     entry->outside = Link_create(file, outsideDestination);
-    entry->inside = Link_create(file, insideDestination);
-
-    File_close(file);
+    entry->inside = Link_create(file, 0);
 
     return entry;
+}
+
+void Entry_update(struct Entry * entry, struct File * file, long int insideDestination)
+{
+    File_open(file);
+
+    Link_update(entry->inside, file, insideDestination);
+
+    File_close(file);
 }
 
 long int Entry_outside(struct Entry * entry)
 {
     return Link_destination(entry->outside);
+}
+
+long int Entry_position(struct Entry * entry)
+{
+    return Link_position(entry->outside);
 }
 
 struct Entry * Entry_read(struct File * file, long int outsideDestination)
@@ -90,25 +97,14 @@ long int Entry_outsides(struct Entry * entry, long int index)
     }
 
     // error getting entry
+    exit(1);
 }
 
-void Entry_connect(struct Entry * entry, struct File * file, long int toNodeId)
+struct Entry * Entry_tail(struct Entry * entry)
 {
     if (NULL != entry->next) {
-        Entry_connect(entry->next, file, toNodeId);
+        return Entry_tail(entry->next);
     }
 
-    // create new entry
-
-    File_open(file);
-    File_seekEnd(file);
-
-    entry->outside = Link_create(file, toNodeId);
-    entry->inside = Link_create(file, 0);
-
-    File_close(file);
-
-    // connect last node entry with the new one
-
-
+    return entry;
 }
