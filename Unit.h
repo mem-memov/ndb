@@ -20,4 +20,6 @@ struct Unit * Unit_read(struct File * file, long int position);
 
 void Unit_write(struct Unit * unit, struct File * file, long int position);
 
+void Unit_checkNodeId(struct File * file, long int position);
+
 #endif

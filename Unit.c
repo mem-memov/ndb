@@ -64,3 +64,12 @@ void Unit_write(struct Unit * unit, struct File * file, long int position)
 {
     File_writeBytes(file, unit->bytes, position);
 }
+
+void Unit_checkNodeId(struct File * file, long int position)
+{
+    struct Unit * nodeIdUnit = Unit_read(file, position);
+    if (Unit_value(nodeIdUnit) != position) {
+        // error: not node id
+        exit(1);
+    }
+}

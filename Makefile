@@ -10,7 +10,7 @@ File.o: File.c File.h Address.h
 Address.o: Address.c Address.h
 	gcc -c Address.c
 
-Node.o: Node.c Node.h Entry.h File.h
+Node.o: Node.c Node.h Entry.h File.h Unit.h
 	gcc -c Node.c
 
 Entry.o: Entry.c Entry.h Link.h File.h
