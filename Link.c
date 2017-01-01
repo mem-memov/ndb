@@ -62,6 +62,11 @@ struct Link * Link_read(struct File * file, long int position)
 
 void Link_update(struct Link * link, struct File * file, long int destination)
 {
+    if (0 != Unit_value(link->destinationUnit)) {
+        // error updating link - link not empty
+        exit(1);
+    }
+
     struct Unit * oldDestinationUnit = link->destinationUnit;
     struct Unit * newDestinationUnit = Unit_create(File_unitSizeInBytes(file), destination);
 
@@ -69,4 +74,11 @@ void Link_update(struct Link * link, struct File * file, long int destination)
     Unit_destruct(oldDestinationUnit);
 
     Unit_write(link->destinationUnit, file, Unit_value(link->positionUnit));
+
+    struct Unit * actualDestinationUnit = Unit_read(file, Unit_value(link->positionUnit));
+
+    if (Unit_value(link->destinationUnit) != Unit_value(actualDestinationUnit)) {
+        // error: link write race - need to delete created entry
+        exit(1);
+    }
 }
