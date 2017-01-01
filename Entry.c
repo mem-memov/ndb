@@ -99,3 +99,16 @@ struct Entry * Entry_tail(struct Entry * entry)
 
     return entry;
 }
+
+char Entry_hasOutside(struct Entry * entry, long int outsideDestination)
+{
+    if (Entry_outside(entry) == outsideDestination) {
+        return 1;
+    }
+
+    if (NULL != entry->nextEntry) {
+        return Entry_hasOutside(entry->nextEntry, outsideDestination);
+    }
+
+    return 0;
+}

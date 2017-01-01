@@ -58,6 +58,16 @@ long int Node_ids(struct Node * node, long int index)
 
 void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)
 {
+    if (Node_id(fromNode) == toNodeId) {
+        // error: node self-referencing
+        exit(1);
+    }
+
+    if (1 == Entry_hasOutside(fromNode->headEntry, toNodeId)) {
+        // already connected
+        return;
+    }
+
     File_checkNodeId(file, toNodeId);
 
     struct Entry * newEntry = Entry_create(file, toNodeId);

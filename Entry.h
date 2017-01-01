@@ -29,4 +29,6 @@ long int Entry_outsides(struct Entry * entry, long int index);
 
 struct Entry * Entry_tail(struct Entry * entry);
 
+char Entry_hasOutside(struct Entry * entry, long int outsideDestination);
+
 #endif
