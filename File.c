@@ -132,6 +132,11 @@ long int File_newPosition(struct File * file)
 
 void File_checkNodeId(struct File * file, long int nodeId)
 {
+    if (File_newPosition(file) <= nodeId) {
+        // error: not node id out of range
+        exit(1);
+    }
+
     if (File_read(file, nodeId) != nodeId) {
         // error: not node id
         exit(1);
