@@ -4,9 +4,9 @@
 #include "File.h"
 
 struct Entry {
-	struct Link * outside;
-	struct Link * inside;
-	struct Entry * next;
+	struct Link * outsideLink;
+	struct Link * insideLink;
+	struct Entry * nextEntry;
 };
 
 struct Entry * Entry_construct();

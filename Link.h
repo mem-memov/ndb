@@ -4,8 +4,8 @@
 #include "File.h"
 
 struct Link {
-	struct Unit * position;
-	struct Unit * destination;
+	struct Unit * positionUnit;
+	struct Unit * destinationUnit;
 };
 
 struct Link * Link_construct();

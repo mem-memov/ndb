@@ -4,7 +4,7 @@
 #include "File.h"
 
 struct Node {
-	struct Entry * head;
+	struct Entry * headEntry;
 };
 
 struct Node * Node_construct();

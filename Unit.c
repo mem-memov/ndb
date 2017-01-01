@@ -2,8 +2,6 @@
 #include "File.h"
 #include <stdlib.h>
 
-#include <stdio.h>
-
 struct Unit * Unit_construct(char length)
 {
 	struct Unit * unit = malloc(sizeof(struct Unit));
@@ -64,6 +62,5 @@ struct Unit * Unit_read(struct File * file, long int position)
 
 void Unit_write(struct Unit * unit, struct File * file, long int position)
 {
-    //printf("%ld\n", position);
     File_writeBytes(file, unit->bytes, position);
 }
