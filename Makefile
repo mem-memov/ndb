@@ -22,3 +22,8 @@ Link.o: Link.c Link.h File.h
 clean:
 	rm *.o ndb
 
+install:
+	install ndb /usr/local/bin/ndb
+
+uninstall:
+	rm /usr/local/bin/ndb
