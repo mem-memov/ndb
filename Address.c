@@ -1,15 +1,12 @@
 #include "Address.h"
+#include "Error.h"
 #include <stdlib.h>
 
 struct Address * Address_construct(long int length)
 {
     struct Address * address = malloc(sizeof(struct Address));
 
-    if (0 == length) {
-        // length in bytes can't be zero
-        exit(1);
-    }
-
+    Error_inAddressWhileConstructing(length);
     address->length = length;
 
     return address;

@@ -3,6 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 
+void Error_inAddressWhileConstructing(char length)
+{
+    if (0 >= length) {
+        fprintf(stderr, "Error_inAddressWhileConstructing: address of no length.\n");
+        exit(1);
+    }
+}
+
 void Error_inFileWhileConstructingWithUnitSize(char unitSizeInBytes)
 {
     if (0 >= unitSizeInBytes) {
@@ -76,6 +84,20 @@ void Error_inFileWhileCheckingNodeIdEqualsPosition(long int position, long int n
 {
     if (position != nodeId) {
         fprintf(stderr, "Error_inFileWhileCheckingNodeIdEqualsPosition: %ld is not a node id.\n", nodeId);
+        exit(1);
+    }
+}
+
+void Error_inEntrySearchingOutsideLinks()
+{
+    fprintf(stderr, "Error_inEntrySearchingOutsideLinks: initial index is greater than entry chain length.\n");
+    exit(1);
+}
+
+void Error_inNodeBeforeConnecting(long int fromNodeId, long int toNodeId)
+{
+    if (fromNodeId == toNodeId) {
+        fprintf(stderr, "Error_inNodeBeforeConnecting: %ld node self-referencing.\n", fromNodeId);
         exit(1);
     }
 }

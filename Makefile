@@ -10,13 +10,13 @@ Database.o: Database.c Database.h File.h Node.h
 File.o: File.c File.h Address.h Error.h
 	gcc -c File.c
 
-Address.o: Address.c Address.h
+Address.o: Address.c Address.h Error.h
 	gcc -c Address.c
 
-Node.o: Node.c Node.h Entry.h File.h
+Node.o: Node.c Node.h Entry.h File.h Error.h
 	gcc -c Node.c
 
-Entry.o: Entry.c Entry.h Link.h File.h
+Entry.o: Entry.c Entry.h Link.h File.h Error.h
 	gcc -c Entry.c
 
 Link.o: Link.c Link.h File.h

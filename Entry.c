@@ -1,6 +1,7 @@
 #include "Entry.h"
 #include "Link.h"
 #include "File.h"
+#include "Error.h"
 #include <stdlib.h>
 
 struct Entry * Entry_construct()
@@ -87,8 +88,7 @@ long int Entry_outsides(struct Entry * entry, long int index)
         return Entry_outsides(entry->nextEntry, index-1);
     }
 
-    // error getting entry
-    exit(1);
+    Error_inEntrySearchingOutsideLinks();
 }
 
 struct Entry * Entry_tail(struct Entry * entry)

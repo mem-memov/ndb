@@ -1,6 +1,7 @@
 #include "Node.h"
 #include "Entry.h"
 #include "File.h"
+#include "Error.h"
 #include <stdlib.h>
 
 struct Node * Node_construct()
@@ -58,10 +59,8 @@ long int Node_ids(struct Node * node, long int index)
 
 void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)
 {
-    if (Node_id(fromNode) == toNodeId) {
-        // error: node self-referencing
-        exit(1);
-    }
+    long int fromNodeId = Node_id(fromNode);
+    Error_inNodeBeforeConnecting(fromNodeId, toNodeId);
 
     if (1 == Entry_hasOutside(fromNode->headEntry, toNodeId)) {
         // already connected
