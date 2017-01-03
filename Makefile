@@ -1,4 +1,4 @@
-ndb: main.o Database.o File.o Address.o Node.o Entry.o Link.o Error.o
+ndb: main.o Database.o File.o Address.o Node.o Entry.o Link.o Error.o 
 	gcc main.o Database.o File.o Address.o Node.o Entry.o Link.o Error.o -o ndb
 
 main.o: main.c Database.h
@@ -26,10 +26,10 @@ Error.o: Error.c Error.h
 	gcc -c Error.c
 
 clean:
-	rm *.o ndb
+	rm --force *.o ndb libndb.a
 
 install:
-	install ndb /usr/local/bin/ndb
+	rm --force main.o && gcc -c ndb.c && ar -rcs libndb.a *.o && cp libndb.a /usr/local/lib/libndb.a && cp ndb.h /usr/local/include/ndb.h
 
 uninstall:
-	rm /usr/local/bin/ndb
+	rm --force /usr/local/lib/libndb.a /usr/local/include/ndb.h
