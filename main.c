@@ -1,5 +1,4 @@
-#include "Node.h"
-#include "File.h"
+#include "Database.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[])
@@ -8,44 +7,23 @@ int main(int argc, char *argv[])
 
     char unitSizeInBytes = 6;
     char * path = "data";
+    struct Database * database = Database_construct(path, unitSizeInBytes);
 
     if (1 == argc) {
-        struct File * file = File_construct(path, unitSizeInBytes);
-        File_open(file);
-        struct Node * node = Node_create(file);
-        printf("%ld", Node_id(node));
-        Node_destruct(node);
-        File_close(file);
-        File_destruct(file);
+        Database_createNode(database);
         return(0);
     }
 
     if (2 == argc) {
         long int nodeId = strtol(argv[1], NULL, 10);
-        struct File * file = File_construct(path, unitSizeInBytes);
-        File_open(file);
-        struct Node * node = Node_read(file, nodeId);
-        long int externalNodeCount = Node_count(node);
-        long int i;
-        for (i = 0; i < externalNodeCount; i++) {
-            printf("%ld ", Node_ids(node, i));
-        }
-        Node_destruct(node);
-        File_close(file);
-        File_destruct(file);
+        Database_readNode(database, nodeId);
         return(0);
     }
 
     if (3 == argc) {
         long int fromNodeId = strtol(argv[1], NULL, 10);
         long int toNodeId = strtol(argv[2], NULL, 10);
-        struct File * file = File_construct(path, unitSizeInBytes);
-        File_open(file);
-        struct Node * fromNode = Node_read(file, fromNodeId);
-        Node_connect(fromNode, file, toNodeId);
-        Node_destruct(fromNode);
-        File_close(file);
-        File_destruct(file);
+        Database_connectNodes(database, fromNodeId, toNodeId);
         return(0);
     }
 

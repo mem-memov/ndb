@@ -1,8 +1,11 @@
-ndb: main.o File.o Address.o Node.o Entry.o Link.o
-	gcc main.o File.o Address.o Node.o Entry.o Link.o -o ndb
+ndb: main.o Database.o File.o Address.o Node.o Entry.o Link.o
+	gcc main.o Database.o File.o Address.o Node.o Entry.o Link.o -o ndb
 
-main.o: main.c Node.h File.h
+main.o: main.c Database.h
 	gcc -c main.c
+
+Database.o: Database.c Database.h File.h Node.h
+	gcc -c Database.c
 
 File.o: File.c File.h Address.h
 	gcc -c File.c
