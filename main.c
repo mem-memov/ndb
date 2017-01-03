@@ -1,4 +1,4 @@
-#include "Database.h"
+#include "ndb.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[])
@@ -7,25 +7,33 @@ int main(int argc, char *argv[])
         return(1);
     }
 
-    char unitSizeInBytes = 6;
-    char * path = "data";
-    struct Database * database = Database_construct(path, unitSizeInBytes);
-
     if (1 == argc) {
-        Database_createNode(database);
+        long int nodeId = ndb_create();
+        printf("%ld\n", nodeId);
     }
 
     if (2 == argc) {
         long int nodeId = strtol(argv[1], NULL, 10);
-        Database_readNode(database, nodeId);
+        int length = 4096;
+        long int buffer[length];
+        int offset = 0;
+        long int total = ndb_read(nodeId, buffer, length, offset);
+        int i = 0;
+        while (i < length && i < total) {
+            if (i > 0) {
+                printf(" ");
+            }
+            printf("%ld", buffer[i]);
+            i++;
+        }
+        printf("\n");
     }
 
     if (3 == argc) {
         long int fromNodeId = strtol(argv[1], NULL, 10);
         long int toNodeId = strtol(argv[2], NULL, 10);
-        Database_connectNodes(database, fromNodeId, toNodeId);
+        ndb_connect(fromNodeId, toNodeId);
     }
 
-    Database_destruct(database);
     return(0);
 }

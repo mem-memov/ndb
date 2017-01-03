@@ -3,7 +3,7 @@
 
 long int ndb_create();
 
-void ndb_read(long int id);
+long int ndb_read(long int id, long int * buffer, int length, int offset);
 
 void ndb_connect(long int from, long int to);
 

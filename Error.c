@@ -101,3 +101,21 @@ void Error_inNodeBeforeConnecting(long int fromNodeId, long int toNodeId)
         exit(1);
     }
 }
+
+void Error_inIdsBeforeGetting(long int offset, long int length)
+{
+    long int limit = length - 1;
+    if (offset > limit) {
+        fprintf(stderr, "Error_inIdsBeforeGetting: offset %ld is over limit %ld.\n", offset, limit);
+        exit(1);
+    }
+}
+
+void Error_inIdsBeforeSetting(long int offset, long int length)
+{
+    long int limit = length - 1;
+    if (offset > limit) {
+        fprintf(stderr, "Error_inIdsBeforeSetting: offset %ld is over limit %ld.\n", offset, limit);
+        exit(1);
+    }
+}

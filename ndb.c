@@ -1,27 +1,35 @@
 #include "ndb.h"
 #include "Database.h"
+#include "Ids.h"
 
 static char unitSizeInBytes = 6;
 static char * path = "data";
-static struct Database * database;
 
 long int ndb_create()
 {
-    database = Database_construct(path, unitSizeInBytes);
-    Database_createNode(database);
+    struct Database * database = Database_construct(path, unitSizeInBytes);
+    long int nodeId = Database_createNode(database);
     Database_destruct(database);
+
+    return nodeId;
 }
 
-void ndb_read(long int id)
+long int ndb_read(long int id, long int * buffer, int length, int offset)
 {
-    database = Database_construct(path, unitSizeInBytes);
-    Database_readNode(database, id);
+    struct Database * database = Database_construct(path, unitSizeInBytes);
+    struct Ids * ids = Database_readNode(database, id);
+
+    long int total = Ids_copy(ids, buffer, length, offset);
+
+    Ids_destruct(ids);
     Database_destruct(database);
+
+    return total;
 }
 
 void ndb_connect(long int from, long int to)
 {
-    database = Database_construct(path, unitSizeInBytes);
+    struct Database * database = Database_construct(path, unitSizeInBytes);
     Database_connectNodes(database, from, to);
     Database_destruct(database);
 }

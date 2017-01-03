@@ -1,6 +1,7 @@
 #include "Database.h"
 #include "File.h"
 #include "Node.h"
+#include "Ids.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -20,26 +21,31 @@ void Database_destruct(struct Database * database)
     free(database);
 }
 
-void Database_createNode(struct Database * database)
+long int Database_createNode(struct Database * database)
 {
     File_open(database->file);
     struct Node * node = Node_create(database->file);
-    printf("%ld", Node_id(node));
+    long int nodeId = Node_id(node);
     Node_destruct(node);
     File_close(database->file);
+
+    return nodeId;
 }
 
-void Database_readNode(struct Database * database, long int nodeId)
+struct Ids * Database_readNode(struct Database * database, long int nodeId)
 {
     File_open(database->file);
     struct Node * node = Node_read(database->file, nodeId);
-    long int externalNodeCount = Node_count(node);
+    long int nodeCount = Node_count(node);
+    struct Ids * ids = Ids_construct(nodeCount);
     long int i;
-    for (i = 0; i < externalNodeCount; i++) {
-        printf("%ld ", Node_ids(node, i));
+    for (i = 0; i < Ids_length(ids); i++) {
+        Ids_set(ids, i, Node_ids(node, i));
     }
     Node_destruct(node);
     File_close(database->file);
+
+    return ids;
 }
 
 void Database_connectNodes(struct Database * database, long int fromNodeId, long int toNodeId)
