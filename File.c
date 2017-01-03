@@ -1,5 +1,6 @@
 #include "File.h"
 #include "Address.h"
+#include "Error.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -11,10 +12,7 @@ struct File * File_construct(char * path, char unitSizeInBytes)
 	file->path = malloc(strlen(path)+1);
 	strcpy(file->path, path);
 
-    if (0 == unitSizeInBytes) {
-        // error: units of no length
-        exit(1);
-    }
+	Error_inFileWhileConstructingWithUnitSize(unitSizeInBytes);
 	file->unitSizeInBytes = unitSizeInBytes;
 
 	file->resource = NULL;
@@ -26,10 +24,7 @@ struct File * File_construct(char * path, char unitSizeInBytes)
 
 void File_destruct(struct File * file)
 {
-	if (NULL != file->resource) {
-        // error: resource not closed
-        exit(1);
-	}
+	Error_inFileWhileDestructingResource(file->resource);
 
 	Address_destruct(file->address);
 	free(file->path);
@@ -43,41 +38,30 @@ char File_unitSizeInBytes(struct File * file)
 
 void File_open(struct File * file)
 {
-	if (NULL != file->resource) {
-        // error: resource already open
-        exit(1);
-	}
+	Error_inFileBeforeOpening(file->resource);
 
     file->resource = fopen(file->path, "rb+");
 
     if (NULL == file->resource) {
         // possibly file doesn't exist, let's create it
         file->resource = fopen(file->path, "ab+");
+        Error_inFileAfterOpening(file->resource);
         fclose(file->resource);
         file->resource = fopen(file->path, "rb+");
+        Error_inFileAfterOpening(file->resource);
     } else {
         // otherwise check unitsize
-        if (1 != File_read(file, 0)) {
-            // error: wrong file format
-            exit(1);
-        }
-    }
+        long int firstDestination = File_read(file, 0);
 
-    if (NULL == file->resource) {
-        // error opening file
-        exit(1);
+        Error_inFileAfterOpeningWithWrongUnitSize(firstDestination);
     }
 }
 
 void File_close(struct File * file)
 {
-	if (NULL == file->resource) {
-        // error: resource not open
-        exit(1);
-	}
+	Error_inFileBeforeClosing(file->resource);
 
     fclose(file->resource);
-
     file->resource = NULL;
 }
 
@@ -119,10 +103,7 @@ long int File_write(struct File * file, long int position, long int destination)
 
 long int File_newPosition(struct File * file)
 {
-	if (NULL == file->resource) {
-        // error: resource not open
-        exit(1);
-	}
+	Error_inFileBeforeGeneratingNewPosition(file->resource);
 
     fseek(file->resource, 0, SEEK_END);
     long int byteAddress = ftell(file->resource);
@@ -132,13 +113,9 @@ long int File_newPosition(struct File * file)
 
 void File_checkNodeId(struct File * file, long int nodeId)
 {
-    if (File_newPosition(file) <= nodeId) {
-        // error: not node id out of range
-        exit(1);
-    }
+    long int newPosition = File_newPosition(file);
+    Error_inFileWhileCheckingNodeIdOutOfRange(newPosition, nodeId);
 
-    if (File_read(file, nodeId) != nodeId) {
-        // error: not node id
-        exit(1);
-    }
+    long int position = File_read(file, nodeId);
+    Error_inFileWhileCheckingNodeIdEqualsPosition(position, nodeId);
 }
