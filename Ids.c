@@ -44,7 +44,8 @@ long int Ids_copy(struct Ids * ids, long int * buffer, int length, int offset)
         && i < length
         && i < ids->length
     ) {
-        buffer[i] = ids->items[offset];
+
+        buffer[i] = ids->items[i];
         i++;
     }
 

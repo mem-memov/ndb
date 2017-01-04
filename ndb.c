@@ -18,7 +18,6 @@ long int ndb_read(long int id, long int * buffer, int length, int offset)
 {
     struct Database * database = Database_construct(path, unitSizeInBytes);
     struct Ids * ids = Database_readNode(database, id);
-
     long int total = Ids_copy(ids, buffer, length, offset);
 
     Ids_destruct(ids);
