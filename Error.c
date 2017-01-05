@@ -123,12 +123,6 @@ void Error_inIdsBeforeCopying(long int length, long int offset)
     }
 }
 
-void Error_inEntrySearchingOutsideLinks()
-{
-    fprintf(stderr, "Error_inEntrySearchingOutsideLinks: initial index is greater than entry chain length.\n");
-    exit(1);
-}
-
 void Error_inNodeBeforeConnecting(long int fromNodeId, long int toNodeId)
 {
     if (fromNodeId == toNodeId)

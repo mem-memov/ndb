@@ -15,8 +15,6 @@ void Error_inFileBeforeGeneratingNewPosition(FILE * resource);
 void Error_inFileWhileCheckingNodeIdOutOfRange(long int newPosition, long int nodeId);
 void Error_inFileWhileCheckingNodeIdEqualsPosition(long int position, long int nodeId);
 
-void Error_inEntrySearchingOutsideLinks();
-
 void Error_inIdsBeforeAppendingWithOffset(long int offset, long int length, long int * items);
 void Error_inIdsBeforeCopying(long int length, long int offset);
 

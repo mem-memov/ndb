@@ -89,10 +89,8 @@ void Entry_outsides(struct Entry * entry, struct Ids * ids)
 
     if (NULL != entry->nextEntry)
     {
-        return Entry_outsides(entry->nextEntry, ids);
+        Entry_outsides(entry->nextEntry, ids);
     }
-
-    Error_inEntrySearchingOutsideLinks();
 }
 
 struct Entry * Entry_tail(struct Entry * entry)
