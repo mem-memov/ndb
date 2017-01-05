@@ -8,7 +8,7 @@ long int Intersector_count(long int * theseItems, long int thisLength, long int 
 
 	while ((thisOffset < thisLength) && (thatOffset < thatLength))
 	{
-		if (theseIds->items[thisOffset] == thoseIds->items[thatOffset])
+		if (theseItems[thisOffset] == thoseItems[thatOffset])
 		{
 			thisOffset++;
             thatOffset++;
@@ -16,7 +16,7 @@ long int Intersector_count(long int * theseItems, long int thisLength, long int 
 		}
 		else
 		{
-			if (theseIds->items[thisOffset] < thoseIds->items[thatOffset])
+			if (theseItems[thisOffset] < thoseItems[thatOffset])
 			{
 				thisOffset++;
 			} else {
@@ -36,7 +36,7 @@ void Intersector_intersect(long int * theseItems, long int thisLength, long int 
 
 	while ((thisOffset < thisLength) && (thatOffset < thatLength))
 	{
-		if (theseIds->items[thisOffset] == thoseIds->items[thatOffset])
+		if (theseItems[thisOffset] == thoseItems[thatOffset])
 		{
 			resultItems[resultOffset] = theseItems[thisOffset];
 
@@ -46,7 +46,7 @@ void Intersector_intersect(long int * theseItems, long int thisLength, long int 
 		}
 		else
 		{
-			if (theseIds->items[thisOffset] < thoseIds->items[thatOffset])
+			if (theseItems[thisOffset] < thoseItems[thatOffset])
 			{
 				thisOffset++;
 			} else {

@@ -31,3 +31,14 @@ void ndb_connect(long int from, long int to)
     Database_connectNodes(database, from, to);
     Database_destruct(database);
 }
+
+long int ndb_intersect(long int * ids, int idsLength, long int * buffer, int bufferLength)
+{
+    struct Database * database = Database_construct(path, unitSizeInBytes);
+    struct Ids * commonIds = Database_intersectNodes(database, ids, idsLength);
+    long int total = Ids_copy(commonIds, buffer, bufferLength);
+    Ids_destruct(commonIds);
+    Database_destruct(database);
+
+    return total;
+}

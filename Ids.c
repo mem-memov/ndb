@@ -75,7 +75,7 @@ struct Ids * Ids_intersect(struct Ids * theseIds, struct Ids * thoseIds)
 
     struct Ids * resultIds = Ids_construct(resultLength);
     long int i;
-    for (i = 0; i < resultLength, i++)
+    for (i = 0; i < resultLength; i++)
     {
         Ids_append(resultIds, resultItems[i]);
     }
