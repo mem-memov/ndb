@@ -42,17 +42,15 @@ void File_open(struct File * file)
 
     file->resource = fopen(file->path, "rb+");
 
-    if (NULL == file->resource) {
-        // possibly file doesn't exist, let's create it
+    if (NULL == file->resource)
+    { // possibly file doesn't exist, let's create it
         file->resource = fopen(file->path, "ab+");
         Error_inFileAfterOpening(file->resource);
         fclose(file->resource);
         file->resource = fopen(file->path, "rb+");
         Error_inFileAfterOpening(file->resource);
-    } else {
-        // otherwise check unitsize
+    } else { // otherwise check unitsize
         long int firstDestination = File_read(file, 0);
-
         Error_inFileAfterOpeningWithWrongUnitSize(firstDestination);
     }
 }
@@ -77,7 +75,8 @@ long int File_read(struct File * file, long int position)
     long int destination = 0 + bytes[0];
     char i;
     char byte;
-    for (i = 1; i < file->unitSizeInBytes; i++) {
+    for (i = 1; i < file->unitSizeInBytes; i++)
+    {
         byte = (long int)bytes[i];
         destination = destination * 256 * i + byte;
     };
@@ -92,7 +91,8 @@ long int File_write(struct File * file, long int position, long int destination)
 	char bytes[file->unitSizeInBytes];
     char i;
     char offset;
-    for (i = 0; i < file->unitSizeInBytes; i++ ) {
+    for (i = 0; i < file->unitSizeInBytes; i++ )
+    {
         offset = 8 * (file->unitSizeInBytes - i - 1);
         bytes[i] = (destination >> offset) & 0xFF;
     }

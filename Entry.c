@@ -18,11 +18,13 @@ struct Entry * Entry_construct()
 
 void Entry_destruct(struct Entry * entry)
 {
-	if (NULL != entry->insideLink) {
+	if (NULL != entry->insideLink)
+	{
 		Link_destruct(entry->insideLink);
 	}
 
-	if  (NULL != entry->outsideLink) {
+	if  (NULL != entry->outsideLink)
+	{
 		Link_destruct(entry->outsideLink);
 	}
 
@@ -63,7 +65,8 @@ struct Entry * Entry_read(struct File * file, long int position)
 
     long int insideDestination = Link_destination(entry->insideLink);
 
-    if (0 != insideDestination) {
+    if (0 != insideDestination)
+    {
         entry->nextEntry = Entry_read(file, insideDestination);
     }
 
@@ -72,7 +75,8 @@ struct Entry * Entry_read(struct File * file, long int position)
 
 long int Entry_count(struct Entry * entry)
 {
-    if (NULL != entry->nextEntry) {
+    if (NULL != entry->nextEntry)
+    {
         return 1 + Entry_count(entry->nextEntry);
     }
 
@@ -83,7 +87,8 @@ void Entry_outsides(struct Entry * entry, struct Ids * ids)
 {
     Ids_append(ids, Entry_outside(entry));
 
-    if (NULL != entry->nextEntry) {
+    if (NULL != entry->nextEntry)
+    {
         return Entry_outsides(entry->nextEntry, ids);
     }
 
@@ -92,7 +97,8 @@ void Entry_outsides(struct Entry * entry, struct Ids * ids)
 
 struct Entry * Entry_tail(struct Entry * entry)
 {
-    if (NULL != entry->nextEntry) {
+    if (NULL != entry->nextEntry)
+    {
         return Entry_tail(entry->nextEntry);
     }
 
@@ -101,11 +107,13 @@ struct Entry * Entry_tail(struct Entry * entry)
 
 char Entry_hasOutside(struct Entry * entry, long int outsideDestination)
 {
-    if (Entry_outside(entry) == outsideDestination) {
+    if (Entry_outside(entry) == outsideDestination)
+    {
         return 1;
     }
 
-    if (NULL != entry->nextEntry) {
+    if (NULL != entry->nextEntry)
+    {
         return Entry_hasOutside(entry->nextEntry, outsideDestination);
     }
 

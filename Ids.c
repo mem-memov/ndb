@@ -11,7 +11,8 @@ struct Ids * Ids_construct(long int length)
 	ids->items = malloc(sizeof(long int));
 
 	long int i;
-	for (i = 0; i < ids->length; i++) {
+	for (i = 0; i < ids->length; i++)
+	{
         ids->items[i] = 0; // indicator of free item, ids start with number one
 	}
 

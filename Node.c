@@ -16,9 +16,11 @@ struct Node * Node_construct()
 
 void Node_destruct(struct Node * node)
 {
-	if (NULL != node->headEntry) {
+	if (NULL != node->headEntry)
+	{
 		Entry_destruct(node->headEntry);
 	}
+
 	free(node);
 }
 
@@ -63,8 +65,8 @@ void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)
     long int fromNodeId = Node_id(fromNode);
     Error_inNodeBeforeConnecting(fromNodeId, toNodeId);
 
-    if (1 == Entry_hasOutside(fromNode->headEntry, toNodeId)) {
-        // already connected
+    if (1 == Entry_hasOutside(fromNode->headEntry, toNodeId))
+    { // already connected
         return;
     }
 
