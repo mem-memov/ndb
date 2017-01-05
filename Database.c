@@ -38,10 +38,7 @@ struct Ids * Database_readNode(struct Database * database, long int nodeId)
     struct Node * node = Node_read(database->file, nodeId);
     long int nodeCount = Node_count(node);
     struct Ids * ids = Ids_construct(nodeCount);
-    long int i;
-    for (i = 0; i < Ids_length(ids); i++) {
-        Ids_set(ids, i, Node_ids(node, i));
-    }
+    Node_ids(node, ids);
     Node_destruct(node);
     File_close(database->file);
 

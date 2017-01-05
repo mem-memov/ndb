@@ -4,6 +4,7 @@
 struct Ids {
 	long int * items;
 	long int length;
+	long int offset;
 };
 
 struct Ids * Ids_construct();
@@ -12,10 +13,8 @@ void Ids_destruct(struct Ids * ids);
 
 long int Ids_length(struct Ids * ids);
 
-long int Ids_get(struct Ids * ids, long int offset);
+void Ids_append(struct Ids * ids, long int id);
 
-void Ids_set(struct Ids * ids, long int offset, long int id);
-
-long int Ids_copy(struct Ids * ids, long int * buffer, int length, int offset);
+long int Ids_copy(struct Ids * ids, long int * buffer, int length);
 
 #endif

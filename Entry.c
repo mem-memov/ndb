@@ -1,6 +1,7 @@
 #include "Entry.h"
 #include "Link.h"
 #include "File.h"
+#include "Ids.h"
 #include "Error.h"
 #include <stdlib.h>
 
@@ -78,14 +79,12 @@ long int Entry_count(struct Entry * entry)
     return 1;
 }
 
-long int Entry_outsides(struct Entry * entry, long int index)
+void Entry_outsides(struct Entry * entry, struct Ids * ids)
 {
-    if (0 == index) {
-        return Entry_outside(entry);
-    }
+    Ids_append(ids, Entry_outside(entry));
 
     if (NULL != entry->nextEntry) {
-        return Entry_outsides(entry->nextEntry, index-1);
+        return Entry_outsides(entry->nextEntry, ids);
     }
 
     Error_inEntrySearchingOutsideLinks();

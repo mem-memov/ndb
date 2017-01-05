@@ -88,6 +88,27 @@ void Error_inFileWhileCheckingNodeIdEqualsPosition(long int position, long int n
     }
 }
 
+void Error_inIdsBeforeAppendingWithOffset(long int offset, long int length, long int * items)
+{
+    if (offset == length) {
+        fprintf(stderr, "Error_inIdsBeforeAppendingWithOffset: length %ld is not enough for offset %ld.\n", length, offset);
+        exit(1);
+    }
+
+    if (0 != items[offset]) {
+        fprintf(stderr, "Error_inIdsBeforeAppendingWithOffset: item %ld is not free.\n", offset);
+        exit(1);
+    }
+}
+
+void Error_inIdsBeforeCopying(long int length, long int offset)
+{
+    if ((length - 1) == offset) {
+        fprintf(stderr, "Error_inIdsBeforeCopying: only %ld items of %ld are filled.\n", (offset + 1), length);
+        exit(1);
+    }
+}
+
 void Error_inEntrySearchingOutsideLinks()
 {
     fprintf(stderr, "Error_inEntrySearchingOutsideLinks: initial index is greater than entry chain length.\n");

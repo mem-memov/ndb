@@ -1,6 +1,7 @@
 #include "Node.h"
 #include "Entry.h"
 #include "File.h"
+#include "Ids.h"
 #include "Error.h"
 #include <stdlib.h>
 
@@ -52,9 +53,9 @@ long int Node_count(struct Node * node)
     return Entry_count(node->headEntry) - 1;
 }
 
-long int Node_ids(struct Node * node, long int index)
+void Node_ids(struct Node * node, struct Ids * ids)
 {
-    return Entry_outsides(node->headEntry, index + 1);
+    return Entry_outsides(node->headEntry, ids);
 }
 
 void Node_connect(struct Node * fromNode, struct File * file, long int toNodeId)

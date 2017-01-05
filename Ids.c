@@ -7,7 +7,15 @@ struct Ids * Ids_construct(long int length)
 	struct Ids * ids = malloc(sizeof(struct Ids));
 
 	ids->length = length;
+
 	ids->items = malloc(sizeof(long int));
+
+	long int i;
+	for (i = 0; i < ids->length; i++) {
+        ids->items[i] = 0; // indicator of free item, ids start with number one
+	}
+
+	ids->offset = 0;
 
 	return ids;
 }
@@ -23,28 +31,21 @@ long int Ids_length(struct Ids * ids)
     return ids->length;
 }
 
-long int Ids_get(struct Ids * ids, long int offset)
+void Ids_append(struct Ids * ids, long int id)
 {
-    Error_inIdsBeforeGetting(offset, ids->length);
-    return ids->items[offset];
+    ids->offset++;
+    Error_inIdsBeforeAppendingWithOffset(ids->offset, ids->length, ids->items);
+    ids->items[ids->offset] = id;
 }
 
-void Ids_set(struct Ids * ids, long int offset, long int id)
+long int Ids_copy(struct Ids * ids, long int * buffer, int length)
 {
-    Error_inIdsBeforeGetting(offset, ids->length);
-    ids->items[offset] = id;
-}
+    Error_inIdsBeforeCopying(ids->length, ids->offset);
 
-long int Ids_copy(struct Ids * ids, long int * buffer, int length, int offset)
-{
-    int i = offset;
+    int i = 0;
 
-    while (
-        i >= 0
-        && i < length
-        && i < ids->length
-    ) {
-
+    while (i < length && i < ids->length)
+    {
         buffer[i] = ids->items[i];
         i++;
     }

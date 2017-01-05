@@ -17,6 +17,9 @@ void Error_inFileWhileCheckingNodeIdEqualsPosition(long int position, long int n
 
 void Error_inEntrySearchingOutsideLinks();
 
+void Error_inIdsBeforeAppendingWithOffset(long int offset, long int length, long int * items);
+void Error_inIdsBeforeCopying(long int length, long int offset);
+
 void Error_inNodeBeforeConnecting(long int fromNodeId, long int toNodeId);
 
 #endif

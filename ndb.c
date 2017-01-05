@@ -14,12 +14,11 @@ long int ndb_create()
     return nodeId;
 }
 
-long int ndb_read(long int id, long int * buffer, int length, int offset)
+long int ndb_read(long int id, long int * buffer, int length)
 {
     struct Database * database = Database_construct(path, unitSizeInBytes);
     struct Ids * ids = Database_readNode(database, id);
-    long int total = Ids_copy(ids, buffer, length, offset);
-
+    long int total = Ids_copy(ids, buffer, length);
     Ids_destruct(ids);
     Database_destruct(database);
 

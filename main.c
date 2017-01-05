@@ -16,8 +16,7 @@ int main(int argc, char *argv[])
         long int nodeId = strtol(argv[1], NULL, 10);
         int length = 4096;
         long int buffer[length];
-        int offset = 0;
-        long int total = ndb_read(nodeId, buffer, length, offset);
+        long int total = ndb_read(nodeId, buffer, length);
         int i = 0;
         while (i < length && i < total) {
             if (i > 0) {

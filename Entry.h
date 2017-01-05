@@ -2,6 +2,7 @@
 #define ENTRY_HEADER
 
 #include "File.h"
+#include "Ids.h"
 
 struct Entry {
 	struct Link * outsideLink;
@@ -25,7 +26,7 @@ struct Entry * Entry_read(struct File * file, long int position);
 
 long int Entry_count(struct Entry * entry);
 
-long int Entry_outsides(struct Entry * entry, long int index);
+void Entry_outsides(struct Entry * entry, struct Ids * ids);
 
 struct Entry * Entry_tail(struct Entry * entry);
 
