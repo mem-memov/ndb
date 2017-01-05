@@ -4,6 +4,8 @@
 #include "Sorter.h"
 #include <stdlib.h>
 
+#include <stdio.h>
+
 struct Ids * Ids_construct(long int length)
 {
 	struct Ids * ids = malloc(sizeof(struct Ids));

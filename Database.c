@@ -58,38 +58,28 @@ struct Ids * Database_intersectNodes(struct Database * database, long int * node
 {
     File_open(database->file);
 
-    struct Node * thisNode = Node_read(database->file, nodeIds[0]);
-    long int thisNodeCount = Node_count(thisNode);
-    struct Ids * theseIds = Ids_construct(thisNodeCount);
-    Node_ids(thisNode, theseIds);
-    Node_destruct(thisNode);
-
-    struct Node * thatNode;
-    long int thatNodeCount;
-    struct Ids * thoseIds;
-
-    struct Ids * resultIds;
-
+    struct Node * nodes[length];
+    struct Ids * idLists[length];
+    long int nodeCount;
     long int i;
-    for (i = 1; i < length; i++)
+    for (i = 0; i < length; i++)
     {
-        thatNode = Node_read(database->file, nodeIds[i]);
-        thatNodeCount = Node_count(thatNode);
-        thoseIds = Ids_construct(thatNodeCount);
-        Node_ids(thatNode, thoseIds);
+        nodes[i] = Node_read(database->file, nodeIds[i]);
+        nodeCount = Node_count(nodes[i]);
+        idLists[i] = Ids_construct(nodeCount);
+        Node_ids(nodes[i], idLists[i]);
+    }
 
-        resultIds = Ids_intersect(theseIds, thoseIds);
+    struct Ids * resultIdLists[length - 1];
+    resultIdLists[0] = Ids_intersect(idLists[0], idLists[1]);
 
-        Ids_destruct(theseIds);
-        Node_destruct(thatNode);
-        Ids_destruct(thoseIds);
-
-        theseIds = resultIds;
-
-        Ids_destruct(resultIds);
+    long int k;
+    for (k = 1; k < length-1; k++)
+    {
+        resultIdLists[k] = Ids_intersect(resultIdLists[k - 1], idLists[k+1]);
     }
 
     File_close(database->file);
 
-    return resultIds;
+    return resultIdLists[length - 2];
 }

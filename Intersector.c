@@ -25,7 +25,7 @@ long int Intersector_count(long int * theseItems, long int thisLength, long int 
 		}
 	}
 
-	return (resultOffset + 1);
+	return resultOffset;
 }
 
 void Intersector_intersect(long int * theseItems, long int thisLength, long int * thoseItems, long int thatLength, long int * resultItems, long int resultLength)
@@ -39,7 +39,6 @@ void Intersector_intersect(long int * theseItems, long int thisLength, long int 
 		if (theseItems[thisOffset] == thoseItems[thatOffset])
 		{
 			resultItems[resultOffset] = theseItems[thisOffset];
-
 			thisOffset++;
             thatOffset++;
             resultOffset++;
