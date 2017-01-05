@@ -60,7 +60,8 @@ long int Ids_copy(struct Ids * ids, long int * buffer, int length)
 
 struct Ids * Ids_intersect(struct Ids * theseIds, struct Ids * thoseIds)
 {
-    //TODO: check is full and is unique
+    Error_inIdsBeforeIntersecting(theseIds->length, theseIds->offset);
+    Error_inIdsBeforeIntersecting(thoseIds->length, thoseIds->offset);
 
     long int theseItems[theseIds->length];
     Ids_copy(theseIds, theseItems, theseIds->length);

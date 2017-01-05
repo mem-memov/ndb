@@ -123,6 +123,15 @@ void Error_inIdsBeforeCopying(long int length, long int offset)
     }
 }
 
+void Error_inIdsBeforeIntersecting(long int length, long int offset)
+{
+    if ((length - 1) == offset)
+    {
+        fprintf(stderr, "Error_inIdsBeforeIntersecting: only %ld items of %ld are filled.\n", (offset + 1), length);
+        exit(1);
+    }
+}
+
 void Error_inNodeBeforeConnecting(long int fromNodeId, long int toNodeId)
 {
     if (fromNodeId == toNodeId)
