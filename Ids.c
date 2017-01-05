@@ -1,5 +1,7 @@
 #include "Ids.h"
+#include "Intersector.h"
 #include "Error.h"
+#include "Sorter.h"
 #include <stdlib.h>
 
 struct Ids * Ids_construct(long int length)
@@ -52,6 +54,33 @@ long int Ids_copy(struct Ids * ids, long int * buffer, int length)
     }
 
     return ids->length;
+}
+
+struct Ids * Ids_intersect(struct Ids * theseIds, struct Ids * thoseIds)
+{
+    //TODO: check is full and is unique
+
+    long int theseItems[theseIds->length];
+    Ids_copy(theseIds, theseItems, theseIds->length);
+
+    long int thoseItems[thoseIds->length];
+    Ids_copy(thoseIds, thoseItems, thoseIds->length);
+
+    Sorter_sort(theseItems, theseIds->length);
+    Sorter_sort(thoseItems, thoseIds->length);
+
+    long int resultLength = Intersector_count(theseItems, theseIds->length, thoseItems, thoseIds->length);
+    long int resultItems[resultLength];
+    Intersector_intersect(theseItems, theseIds->length, thoseItems, thoseIds->length, resultItems, resultLength);
+
+    struct Ids * resultIds = Ids_construct(resultLength);
+    long int i;
+    for (i = 0; i < resultLength, i++)
+    {
+        Ids_append(resultIds, resultItems[i]);
+    }
+
+    return resultIds;
 }
 
 

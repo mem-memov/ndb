@@ -53,3 +53,30 @@ void Database_connectNodes(struct Database * database, long int fromNodeId, long
     Node_destruct(fromNode);
     File_close(database->file);
 }
+
+struct Ids * Database_intersectNodes(struct Database * database, long int nodeIds, long int length)
+{
+    File_open(database->file);
+
+    struct Node * thisNode = Node_read(database->file, nodeIds[0]);
+    long int thisNodeCount = Node_count(thisNode);
+    struct Ids * theseIds = Ids_construct(thisNodeCount);
+    Node_ids(thisNode, theseIds);
+
+    struct Ids * resultIds;
+
+    long int i;
+    for (i = 1; i < length; i++)
+    {
+        struct Node * thatNode = Node_read(database->file, nodeIds[i]);
+        long int thatNodeCount = Node_count(thatNode);
+        struct Ids * thoseIds = Ids_construct(thatNodeCount);
+        Node_ids(thatNode, thoseIds);
+
+        Ids_intersect(theseIds, thoseIds);
+    }
+
+    File_close(database->file);
+
+    return resultIds;
+}

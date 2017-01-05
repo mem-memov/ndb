@@ -1,0 +1,57 @@
+#include "Intersector.h"
+
+long int Intersector_count(long int * theseItems, long int thisLength, long int * thoseItems, long int thatLength)
+{
+	long int thisOffset = 0;
+	long int thatOffset = 0;
+	long int resultOffset = 0;
+
+	while ((thisOffset < thisLength) && (thatOffset < thatLength))
+	{
+		if (theseIds->items[thisOffset] == thoseIds->items[thatOffset])
+		{
+			thisOffset++;
+            thatOffset++;
+            resultOffset++;
+		}
+		else
+		{
+			if (theseIds->items[thisOffset] < thoseIds->items[thatOffset])
+			{
+				thisOffset++;
+			} else {
+				thatOffset++;
+			}
+		}
+	}
+
+	return (resultOffset + 1);
+}
+
+void Intersector_intersect(long int * theseItems, long int thisLength, long int * thoseItems, long int thatLength, long int * resultItems, long int resultLength)
+{
+	long int thisOffset = 0;
+	long int thatOffset = 0;
+	long int resultOffset = 0;
+
+	while ((thisOffset < thisLength) && (thatOffset < thatLength))
+	{
+		if (theseIds->items[thisOffset] == thoseIds->items[thatOffset])
+		{
+			resultItems[resultOffset] = theseItems[thisOffset];
+
+			thisOffset++;
+            thatOffset++;
+            resultOffset++;
+		}
+		else
+		{
+			if (theseIds->items[thisOffset] < thoseIds->items[thatOffset])
+			{
+				thisOffset++;
+			} else {
+				thatOffset++;
+			}
+		}
+	}
+}

@@ -17,4 +17,6 @@ void Ids_append(struct Ids * ids, long int id);
 
 long int Ids_copy(struct Ids * ids, long int * buffer, int length);
 
+struct Ids * Ids_intersect(struct Ids * theseIds, struct Ids * thoseIds);
+
 #endif

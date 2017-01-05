@@ -18,4 +18,6 @@ struct Ids * Database_readNode(struct Database * database, long int nodeId);
 
 void Database_connectNodes(struct Database * database, long int fromNodeId, long int toNodeId);
 
+struct Ids * Database_intersectNodes(struct Database * database, long int nodeIds, long int length);
+
 #endif
