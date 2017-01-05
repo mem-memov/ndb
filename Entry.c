@@ -85,7 +85,12 @@ long int Entry_count(struct Entry * entry)
 
 void Entry_outsides(struct Entry * entry, struct Ids * ids)
 {
-    Ids_append(ids, Entry_outside(entry));
+    long int outside = Entry_outside(entry);
+
+    if (Entry_position(entry) != outside) // skip node head entry that keeps the node id
+    {
+        Ids_append(ids, outside);
+    }
 
     if (NULL != entry->nextEntry)
     {

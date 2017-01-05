@@ -101,7 +101,7 @@ void Error_inFileWhileCheckingNodeIdEqualsPosition(long int position, long int n
 
 void Error_inIdsBeforeAppendingWithOffset(long int offset, long int length, long int * items)
 {
-    if (offset == length)
+    if (offset >= length)
     {
         fprintf(stderr, "Error_inIdsBeforeAppendingWithOffset: length %ld is not enough for offset %ld.\n", length, offset);
         exit(1);

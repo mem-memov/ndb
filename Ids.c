@@ -8,7 +8,7 @@ struct Ids * Ids_construct(long int length)
 
 	ids->length = length;
 
-	ids->items = malloc(sizeof(long int));
+	ids->items = malloc(sizeof(long int) * ids->length);
 
 	long int i;
 	for (i = 0; i < ids->length; i++)
@@ -34,9 +34,9 @@ long int Ids_length(struct Ids * ids)
 
 void Ids_append(struct Ids * ids, long int id)
 {
-    ids->offset++;
     Error_inIdsBeforeAppendingWithOffset(ids->offset, ids->length, ids->items);
     ids->items[ids->offset] = id;
+    ids->offset++;
 }
 
 long int Ids_copy(struct Ids * ids, long int * buffer, int length)
