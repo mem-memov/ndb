@@ -51,12 +51,7 @@ struct Link * Link_read(struct File * file, long int position)
 
 void Link_update(struct Link * link, struct File * file, long int destination)
 {
-    // TODO: think about it
-    if (0 != link->destination)
-    {
-        // error updating link - link not empty
-        exit(1);
-    }
+    Error_inLinkBeforeUpdating(link->destination, link->position);
 
     long int oldDestination = link->destination;
     link->destination = destination;
@@ -65,9 +60,5 @@ void Link_update(struct Link * link, struct File * file, long int destination)
 
     long int actualDestination = File_read(file, link->position);
 
-    if (link->destination != actualDestination)
-    {
-        // error: link write race - need to delete created entry
-        exit(1);
-    }
+    Error_inLinkAfterUpdating(link->destination, actualDestination, link->position);
 }

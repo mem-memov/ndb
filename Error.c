@@ -132,15 +132,6 @@ void Error_inIdsBeforeIntersecting(long int length, long int offset)
     }
 }
 
-void Error_inNodeBeforeConnecting(long int fromNodeId, long int toNodeId)
-{
-    if (fromNodeId == toNodeId)
-    {
-        fprintf(stderr, "Error_inNodeBeforeConnecting: %ld node self-referencing.\n", fromNodeId);
-        exit(1);
-    }
-}
-
 void Error_inIdsBeforeGetting(long int offset, long int length)
 {
     long int limit = length - 1;
@@ -157,6 +148,33 @@ void Error_inIdsBeforeSetting(long int offset, long int length)
     if (offset > limit)
     {
         fprintf(stderr, "Error_inIdsBeforeSetting: offset %ld is over limit %ld.\n", offset, limit);
+        exit(1);
+    }
+}
+
+void Error_inLinkBeforeUpdating(long int destination, long int position)
+{
+    if (0 != destination)
+    {
+        fprintf(stderr, "Error_inLinkBeforeUpdating: link at position %ld not empty.\n", position);
+        exit(1);
+    }
+}
+
+void Error_inLinkAfterUpdating(long int destination, long int actualDestination, long int position)
+{
+    if (destination != actualDestination)
+    {
+        fprintf(stderr, "Error_inLinkAfterUpdating: link at position %ld could not hold the destination %ld which was overwritten by %ld. Data race may have caused this.\n", position, destination, actualDestination);
+        exit(1);
+    }
+}
+
+void Error_inNodeBeforeConnecting(long int fromNodeId, long int toNodeId)
+{
+    if (fromNodeId == toNodeId)
+    {
+        fprintf(stderr, "Error_inNodeBeforeConnecting: %ld node self-referencing.\n", fromNodeId);
         exit(1);
     }
 }

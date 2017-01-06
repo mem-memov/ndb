@@ -19,6 +19,9 @@ void Error_inIdsBeforeAppendingWithOffset(long int offset, long int length, long
 void Error_inIdsBeforeCopying(long int length, long int offset);
 void Error_inIdsBeforeIntersecting(long int length, long int offset);
 
+void Error_inLinkBeforeUpdating(long int destination, long int position);
+void Error_inLinkAfterUpdating(long int destination, long int actualDestination, long int position);
+
 void Error_inNodeBeforeConnecting(long int fromNodeId, long int toNodeId);
 
 #endif
