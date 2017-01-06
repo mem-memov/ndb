@@ -21,6 +21,11 @@ make
 ./ndb
 ```
 
+To uninstall run:
+```
+sudo make uninstall
+```
+
 ### Use
 
 All operations on nodes are available in command line. Run the database in any directory in you Ubuntu system. If run without arguments it will display a help test with option list.
