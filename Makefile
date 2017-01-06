@@ -47,7 +47,7 @@ clean:
 	rm --force *.o ndb libndb.a
 
 install:
-	rm --force main.o && ar -rcs libndb.a *.o && cp libndb.a /usr/local/lib/libndb.a && cp ndb.h /usr/local/include/ndb.h
+	install ndb /usr/local/bin/ndb && rm --force main.o && ar -rcs libndb.a *.o && cp libndb.a /usr/local/lib/libndb.a && cp ndb.h /usr/local/include/ndb.h
 
 uninstall:
-	rm --force /usr/local/lib/libndb.a /usr/local/include/ndb.h
+	rm --force ndb-server /usr/local/bin/ndb /usr/local/lib/libndb.a /usr/local/include/ndb.h

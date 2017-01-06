@@ -6,6 +6,24 @@ static void printIds(long int  * buffer, int commandIdCount, long int total);
 
 int main(int argc, char *argv[])
 {
+    if (argc < 2)
+    {
+        printf("Node Database commands:\n");
+        printf(" ndb create\n");
+        printf(" ndb read my_id\n");
+        printf(" ndb connect my_from_id my_to_id\n");
+        printf(" ndb intersect my_id_1 my_id_2 ...\n");
+        printf(" ndb union my_id_1 my_id_2 ...\n");
+        printf(" ndb difference my_id_1 my_id_2 ...\n");
+        printf(" ndb insiders my_container_id my_id_1 my_id_2 ...\n");
+        printf(" ndb outsiders my_container_id my_id_1 my_id_2 ...\n");
+        printf("To view the file:\n");
+        printf(" xxd -b data | more\n");
+        printf("Source code:");
+        printf(" https://github.com/mem-memov/ndb\n");
+        return (0);
+    }
+
     char command[32];
     strcpy(command, argv[1]);
     int commandIdCount = argc - 2;
