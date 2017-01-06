@@ -83,6 +83,10 @@ struct Ids * Database_intersectNodes(struct Database * database, long int * node
             Ids_destruct(resultIds);
             Ids_destruct(ids);
             resultIds = temporaryIds;
+            if (0 == Ids_length(resultIds))
+            {
+                break;
+            }
         }
     }
     File_close(database->file);
