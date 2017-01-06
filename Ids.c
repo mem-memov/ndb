@@ -6,6 +6,8 @@
 #include "Uniter.h"
 #include <stdlib.h>
 
+#include <stdio.h>
+
 struct Ids * Ids_construct(long int length)
 {
 	struct Ids * ids = malloc(sizeof(struct Ids));
@@ -151,7 +153,7 @@ struct Ids * Ids_insiders(struct Ids * ids, long int * nodeIds, long int length)
     Ids_copy(ids, items, ids->length);
 
     Sorter_sort(items, ids->length);
-    Sorter_sort(items, ids->length);
+    Sorter_sort(nodeIds, length);
 
     long int resultLength = Intersector_count(nodeIds, length, items, ids->length);
     long int resultItems[resultLength];
@@ -163,6 +165,8 @@ struct Ids * Ids_insiders(struct Ids * ids, long int * nodeIds, long int length)
     {
         Ids_append(resultIds, resultItems[i]);
     }
+
+    return resultIds;
 }
 
 struct Ids * Ids_outsiders(struct Ids * ids, long int * nodeIds, long int length)
@@ -173,7 +177,7 @@ struct Ids * Ids_outsiders(struct Ids * ids, long int * nodeIds, long int length
     Ids_copy(ids, items, ids->length);
 
     Sorter_sort(items, ids->length);
-    Sorter_sort(items, ids->length);
+    Sorter_sort(nodeIds, length);
 
     long int resultLength = Differ_count(nodeIds, length, items, ids->length);
     long int resultItems[resultLength];
@@ -185,4 +189,6 @@ struct Ids * Ids_outsiders(struct Ids * ids, long int * nodeIds, long int length
     {
         Ids_append(resultIds, resultItems[i]);
     }
+
+    return resultIds;
 }
