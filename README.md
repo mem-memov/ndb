@@ -23,31 +23,27 @@ make
 
 ### Use
 
+All operations on nodes are available in command line. Run the database in any directory in you Ubuntu system. If run without arguments it will display a help test with option list.
+
+```
+Node Database commands:
+ ndb create
+ ndb read my_id
+ ndb connect my_from_id my_to_id
+ ndb intersect my_id_1 my_id_2 ...
+ ndb union my_id_1 my_id_2 ...
+ ndb difference my_id_1 my_id_2 ...
+ ndb insiders my_container_id my_id_1 my_id_2 ...
+ ndb outsiders my_container_id my_id_1 my_id_2 ...
+To view the file:
+ xxd -b data | more
+Source code: https://github.com/mem-memov/ndb
+```
+
 After installation you can utilize the **ndb** library in your **C** code.
 
 ```
 #include <ndb.h>
-
-// to create a new node
-long int id = ndb_create();
-
-// to read connections of a node
-long int nodeId = 1;
-int bufferLength = 4096;
-long int buffer[bufferLength];
-long int total = ndb_read(nodeId, buffer, bufferLength);
-
-// to connect two nodes
-long int fromNodeId = 1;
-long int toNodeId = 3;
-ndb_connect(fromNodeId, toNodeId);
-
-// to find intesection on connection of several nodes
-long int nodeCount = 3;
-long int nodeIds[nodeCount] = { 1, 3, 27 };
-int bufferLength = 4096;
-long int buffer[bufferLength];
-long int total = ndb_intersect(nodeIds, nodeCount, buffer, bufferLength);
 ```
 
-You can maniputate the graph data from any language that supports sockets in Linux if you install the [ndb-server](https://github.com/mem-memov/ndb-server).
+You can maniputate the graph data from any programming language that supports sockets in Linux if you install the [ndb-server](https://github.com/mem-memov/ndb-server).
