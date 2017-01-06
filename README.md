@@ -1,6 +1,6 @@
 # ndb
 
-NDB stands for Node Database. The database is capable of creating, connecting and reading ids of some graph nodes. It doesn't allow deleteng nodes or connections between them. All data is stored in form of a single binary file. If a number in the file equals its position then the number is a node id.
+NDB stands for Node Database. The database is capable of creating, connecting and reading ids of some graph nodes. It doesn't allow deleteng nodes or connections between them. All data is stored in form of a single binary file. If a number in the file equals its position then the number is a node id. Otherwise it is a linked connection.
 
 The first node is number one:
 ```
@@ -50,4 +50,4 @@ long int buffer[bufferLength];
 long int total = ndb_intersect(nodeIds, nodeCount, buffer, bufferLength);
 ```
 
-You can maniputate the graph data from any language that supports sockets in Linux if you install the **ndb-server**.
+You can maniputate the graph data from any language that supports sockets in Linux if you install the [ndb-server](https://github.com/mem-memov/ndb-server).
