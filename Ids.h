@@ -23,4 +23,8 @@ struct Ids * Ids_union(struct Ids * theseIds, struct Ids * thoseIds);
 
 struct Ids * Ids_difference(struct Ids * theseIds, struct Ids * thoseIds);
 
+struct Ids * Ids_insiders(struct Ids * ids, long int * nodeIds, long int length);
+
+struct Ids * Ids_outsiders(struct Ids * ids, long int * nodeIds, long int length);
+
 #endif

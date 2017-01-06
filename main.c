@@ -38,6 +38,14 @@ int main(int argc, char *argv[])
         ndb_connect(fromNodeId, toNodeId);
     }
 
+    if (strcmp(command, "intersect") == 0)
+    {
+        int bufferLength = 4096;
+        long int buffer[bufferLength];
+        long int total = ndb_intersect(commandIds, commandIdCount, buffer, bufferLength);
+        printIds(buffer, bufferLength, total);
+    }
+
     if (strcmp(command, "union") == 0)
     {
         int bufferLength = 4096;
@@ -51,6 +59,24 @@ int main(int argc, char *argv[])
         int bufferLength = 4096;
         long int buffer[bufferLength];
         long int total = ndb_difference(commandIds, commandIdCount, buffer, bufferLength);
+        printIds(buffer, bufferLength, total);
+    }
+
+    if (strcmp(command, "insiders") == 0)
+    {
+        long int nodeId = commandIds[0];
+        int bufferLength = 4096;
+        long int buffer[bufferLength];
+        long int total = ndb_insiders(nodeId, commandIds+1, commandIdCount-1, buffer, bufferLength);
+        printIds(buffer, bufferLength, total);
+    }
+
+    if (strcmp(command, "outsiders") == 0)
+    {
+        long int nodeId = commandIds[0];
+        int bufferLength = 4096;
+        long int buffer[bufferLength];
+        long int total = ndb_outsiders(nodeId, commandIds+1, commandIdCount-1, buffer, bufferLength);
         printIds(buffer, bufferLength, total);
     }
 

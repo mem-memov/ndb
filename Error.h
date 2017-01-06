@@ -20,6 +20,8 @@ void Error_inIdsBeforeCopying(long int length, long int offset);
 void Error_inIdsBeforeIntersecting(long int length, long int offset);
 void Error_inIdsBeforeDifference(long int length, long int offset);
 void Error_inIdsBeforeUnion(long int length, long int offset);
+void Error_inIdsBeforeInsiders(long int length, long int offset);
+void Error_inIdsBeforeOutsiders(long int length, long int offset);
 
 void Error_inLinkBeforeUpdating(long int destination, long int position);
 void Error_inLinkAfterUpdating(long int destination, long int actualDestination, long int position);

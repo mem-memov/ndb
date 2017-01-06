@@ -24,4 +24,8 @@ struct Ids * Database_unionNodes(struct Database * database, long int * nodeIds,
 
 struct Ids * Database_differenceNodes(struct Database * database, long int * nodeIds, long int length);
 
+struct Ids * Database_insiders(struct Database * database, long int nodeId, long int * nodeIds, long int length);
+
+struct Ids * Database_outsiders(struct Database * database, long int nodeId, long int * nodeIds, long int length);
+
 #endif

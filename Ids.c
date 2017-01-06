@@ -142,3 +142,47 @@ struct Ids * Ids_difference(struct Ids * theseIds, struct Ids * thoseIds)
 
     return resultIds;
 }
+
+struct Ids * Ids_insiders(struct Ids * ids, long int * nodeIds, long int length)
+{
+    Error_inIdsBeforeInsiders(ids->length, ids->offset);
+
+    long int items[ids->length];
+    Ids_copy(ids, items, ids->length);
+
+    Sorter_sort(items, ids->length);
+    Sorter_sort(items, ids->length);
+
+    long int resultLength = Intersector_count(nodeIds, length, items, ids->length);
+    long int resultItems[resultLength];
+    Intersector_intersect(nodeIds, length, items, ids->length, resultItems, resultLength);
+
+    struct Ids * resultIds = Ids_construct(resultLength);
+    long int i;
+    for (i = 0; i < resultLength; i++)
+    {
+        Ids_append(resultIds, resultItems[i]);
+    }
+}
+
+struct Ids * Ids_outsiders(struct Ids * ids, long int * nodeIds, long int length)
+{
+    Error_inIdsBeforeOutsiders(ids->length, ids->offset);
+
+    long int items[ids->length];
+    Ids_copy(ids, items, ids->length);
+
+    Sorter_sort(items, ids->length);
+    Sorter_sort(items, ids->length);
+
+    long int resultLength = Differ_count(nodeIds, length, items, ids->length);
+    long int resultItems[resultLength];
+    Differ_difference(nodeIds, length, items, ids->length, resultItems, resultLength);
+
+    struct Ids * resultIds = Ids_construct(resultLength);
+    long int i;
+    for (i = 0; i < resultLength; i++)
+    {
+        Ids_append(resultIds, resultItems[i]);
+    }
+}

@@ -169,3 +169,33 @@ struct Ids * Database_differenceNodes(struct Database * database, long int * nod
 
     return resultIds;
 }
+
+struct Ids * Database_insiders(struct Database * database, long int nodeId, long int * nodeIds, long int length)
+{
+    File_open(database->file);
+    struct Node * node = Node_read(database->file, nodeId);
+    long int nodeCount = Node_count(node);
+    struct Ids * ids = Ids_construct(nodeCount);
+    Node_ids(node, ids);
+    struct Ids * resultIds = Ids_insiders(ids, nodeIds, length);
+    Ids_destruct(ids);
+    Node_destruct(node);
+    File_close(database->file);
+
+    return resultIds;
+}
+
+struct Ids * Database_outsiders(struct Database * database, long int nodeId, long int * nodeIds, long int length)
+{
+    File_open(database->file);
+    struct Node * node = Node_read(database->file, nodeId);
+    long int nodeCount = Node_count(node);
+    struct Ids * ids = Ids_construct(nodeCount);
+    Node_ids(node, ids);
+    struct Ids * resultIds = Ids_outsiders(ids, nodeIds, length);
+    Ids_destruct(ids);
+    Node_destruct(node);
+    File_close(database->file);
+
+    return resultIds;
+}

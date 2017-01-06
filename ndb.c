@@ -64,3 +64,25 @@ long int ndb_difference(long int * ids, int idsLength, long int * buffer, int bu
 
     return total;
 }
+
+long int ndb_insiders(long int id, long int * ids, int idsLength, long int * buffer, int bufferLength)
+{
+    struct Database * database = Database_construct(path, unitSizeInBytes);
+    struct Ids * resultIds = Database_insiders(database, id, ids, idsLength);
+    long int total = Ids_copy(resultIds, buffer, bufferLength);
+    Ids_destruct(resultIds);
+    Database_destruct(database);
+
+    return total;
+}
+
+long int ndb_outsiders(long int id, long int * ids, int idsLength, long int * buffer, int bufferLength)
+{
+    struct Database * database = Database_construct(path, unitSizeInBytes);
+    struct Ids * resultIds = Database_outsiders(database, id, ids, idsLength);
+    long int total = Ids_copy(resultIds, buffer, bufferLength);
+    Ids_destruct(resultIds);
+    Database_destruct(database);
+
+    return total;
+}

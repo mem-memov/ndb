@@ -150,6 +150,24 @@ void Error_inIdsBeforeUnion(long int length, long int offset)
     }
 }
 
+void Error_inIdsBeforeInsiders(long int length, long int offset)
+{
+    if ((length - 1) == offset)
+    {
+        fprintf(stderr, "Error_inIdsBeforeInsiders: only %ld items of %ld are filled.\n", (offset + 1), length);
+        exit(1);
+    }
+}
+
+void Error_inIdsBeforeOutsiders(long int length, long int offset)
+{
+    if ((length - 1) == offset)
+    {
+        fprintf(stderr, "Error_inIdsBeforeOutsiders: only %ld items of %ld are filled.\n", (offset + 1), length);
+        exit(1);
+    }
+}
+
 void Error_inIdsBeforeGetting(long int offset, long int length)
 {
     long int limit = length - 1;

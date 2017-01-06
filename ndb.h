@@ -13,4 +13,8 @@ long int ndb_union(long int * ids, int idsLength, long int * buffer, int bufferL
 
 long int ndb_difference(long int * ids, int idsLength, long int * buffer, int bufferLength);
 
+long int ndb_insiders(long int id, long int * ids, int idsLength, long int * buffer, int bufferLength);
+
+long int ndb_outsiders(long int id, long int * ids, int idsLength, long int * buffer, int bufferLength);
+
 #endif
