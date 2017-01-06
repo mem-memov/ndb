@@ -1,3 +1,4 @@
 ndb
 *.o
+*.a
 data
