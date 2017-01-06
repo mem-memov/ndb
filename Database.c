@@ -93,3 +93,79 @@ struct Ids * Database_intersectNodes(struct Database * database, long int * node
 
     return resultIds;
 }
+
+struct Ids * Database_unionNodes(struct Database * database, long int * nodeIds, long int length)
+{
+    File_open(database->file);
+
+    struct Node * node;
+    struct Ids * ids;
+    struct Ids * temporaryIds;
+    struct Ids * resultIds;
+    long int nodeCount;
+    long int i;
+    for (i = 0; i < length; i++)
+    {
+        node = Node_read(database->file, nodeIds[i]);
+
+        nodeCount = Node_count(node);
+        ids = Ids_construct(nodeCount);
+        Node_ids(node, ids);
+        Node_destruct(node);
+
+        if (0 == i)
+        {
+            resultIds = ids;
+        }
+        else
+        {
+            temporaryIds = Ids_union(resultIds, ids);
+            Ids_destruct(resultIds);
+            Ids_destruct(ids);
+            resultIds = temporaryIds;
+        }
+    }
+    File_close(database->file);
+
+    return resultIds;
+}
+
+struct Ids * Database_differenceNodes(struct Database * database, long int * nodeIds, long int length)
+{
+    File_open(database->file);
+
+    struct Node * node;
+    struct Ids * ids;
+    struct Ids * temporaryIds;
+    struct Ids * resultIds;
+    long int nodeCount;
+    long int i;
+    for (i = 0; i < length; i++)
+    {
+        node = Node_read(database->file, nodeIds[i]);
+
+        nodeCount = Node_count(node);
+        ids = Ids_construct(nodeCount);
+        Node_ids(node, ids);
+        Node_destruct(node);
+
+        if (0 == i)
+        {
+            resultIds = ids;
+        }
+        else
+        {
+            temporaryIds = Ids_difference(resultIds, ids);
+            Ids_destruct(resultIds);
+            Ids_destruct(ids);
+            resultIds = temporaryIds;
+            if (0 == Ids_length(resultIds))
+            {
+                break;
+            }
+        }
+    }
+    File_close(database->file);
+
+    return resultIds;
+}

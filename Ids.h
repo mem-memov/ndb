@@ -19,4 +19,8 @@ long int Ids_copy(struct Ids * ids, long int * buffer, int length);
 
 struct Ids * Ids_intersect(struct Ids * theseIds, struct Ids * thoseIds);
 
+struct Ids * Ids_union(struct Ids * theseIds, struct Ids * thoseIds);
+
+struct Ids * Ids_difference(struct Ids * theseIds, struct Ids * thoseIds);
+
 #endif

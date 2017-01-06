@@ -1,6 +1,6 @@
-#include "Intersector.h"
+#include "Differ.h"
 
-long int Intersector_count(long int * theseItems, long int thisLength, long int * thoseItems, long int thatLength)
+long int Differ_count(long int * theseItems, long int thisLength, long int * thoseItems, long int thatLength)
 {
 	long int thisOffset = 0;
 	long int thatOffset = 0;
@@ -12,13 +12,13 @@ long int Intersector_count(long int * theseItems, long int thisLength, long int 
 		{
 			thisOffset++;
             thatOffset++;
-            resultOffset++;
 		}
 		else
 		{
 			if (theseItems[thisOffset] < thoseItems[thatOffset])
 			{
 				thisOffset++;
+				resultOffset++;
 			}
 			else
 			{
@@ -27,10 +27,16 @@ long int Intersector_count(long int * theseItems, long int thisLength, long int 
 		}
 	}
 
+	while (thisOffset < thisLength)
+	{
+        thisOffset++;
+        resultOffset++;
+	}
+
 	return resultOffset;
 }
 
-void Intersector_intersect(long int * theseItems, long int thisLength, long int * thoseItems, long int thatLength, long int * resultItems, long int resultLength)
+void Differ_difference(long int * theseItems, long int thisLength, long int * thoseItems, long int thatLength, long int * resultItems, long int resultLength)
 {
 	long int thisOffset = 0;
 	long int thatOffset = 0;
@@ -40,21 +46,28 @@ void Intersector_intersect(long int * theseItems, long int thisLength, long int 
 	{
 		if (theseItems[thisOffset] == thoseItems[thatOffset])
 		{
-			resultItems[resultOffset] = theseItems[thisOffset];
 			thisOffset++;
             thatOffset++;
-            resultOffset++;
 		}
 		else
 		{
 			if (theseItems[thisOffset] < thoseItems[thatOffset])
 			{
+				resultItems[resultOffset] = theseItems[thisOffset];
 				thisOffset++;
+				resultOffset++;
 			}
 			else
 			{
 				thatOffset++;
 			}
 		}
+	}
+
+	while (thisOffset < thisLength)
+	{
+        resultItems[resultOffset] = theseItems[thisOffset];
+        thisOffset++;
+        resultOffset++;
 	}
 }

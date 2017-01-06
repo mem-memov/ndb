@@ -35,9 +35,31 @@ void ndb_connect(long int from, long int to)
 long int ndb_intersect(long int * ids, int idsLength, long int * buffer, int bufferLength)
 {
     struct Database * database = Database_construct(path, unitSizeInBytes);
-    struct Ids * commonIds = Database_intersectNodes(database, ids, idsLength);
-    long int total = Ids_copy(commonIds, buffer, bufferLength);
-    Ids_destruct(commonIds);
+    struct Ids * resultIds = Database_intersectNodes(database, ids, idsLength);
+    long int total = Ids_copy(resultIds, buffer, bufferLength);
+    Ids_destruct(resultIds);
+    Database_destruct(database);
+
+    return total;
+}
+
+long int ndb_union(long int * ids, int idsLength, long int * buffer, int bufferLength)
+{
+    struct Database * database = Database_construct(path, unitSizeInBytes);
+    struct Ids * resultIds = Database_unionNodes(database, ids, idsLength);
+    long int total = Ids_copy(resultIds, buffer, bufferLength);
+    Ids_destruct(resultIds);
+    Database_destruct(database);
+
+    return total;
+}
+
+long int ndb_difference(long int * ids, int idsLength, long int * buffer, int bufferLength)
+{
+    struct Database * database = Database_construct(path, unitSizeInBytes);
+    struct Ids * resultIds = Database_differenceNodes(database, ids, idsLength);
+    long int total = Ids_copy(resultIds, buffer, bufferLength);
+    Ids_destruct(resultIds);
     Database_destruct(database);
 
     return total;

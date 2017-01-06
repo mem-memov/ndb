@@ -1,10 +1,10 @@
 #include "Ids.h"
-#include "Intersector.h"
 #include "Error.h"
+#include "Differ.h"
+#include "Intersector.h"
 #include "Sorter.h"
+#include "Uniter.h"
 #include <stdlib.h>
-
-#include <stdio.h>
 
 struct Ids * Ids_construct(long int length)
 {
@@ -86,4 +86,59 @@ struct Ids * Ids_intersect(struct Ids * theseIds, struct Ids * thoseIds)
     return resultIds;
 }
 
+struct Ids * Ids_union(struct Ids * theseIds, struct Ids * thoseIds)
+{
+    Error_inIdsBeforeUnion(theseIds->length, theseIds->offset);
+    Error_inIdsBeforeUnion(thoseIds->length, thoseIds->offset);
 
+    long int theseItems[theseIds->length];
+    Ids_copy(theseIds, theseItems, theseIds->length);
+
+    long int thoseItems[thoseIds->length];
+    Ids_copy(thoseIds, thoseItems, thoseIds->length);
+
+    Sorter_sort(theseItems, theseIds->length);
+    Sorter_sort(thoseItems, thoseIds->length);
+
+    long int resultLength = Uniter_count(theseItems, theseIds->length, thoseItems, thoseIds->length);
+    long int resultItems[resultLength];
+    Uniter_union(theseItems, theseIds->length, thoseItems, thoseIds->length, resultItems, resultLength);
+
+    struct Ids * resultIds = Ids_construct(resultLength);
+    long int i;
+    for (i = 0; i < resultLength; i++)
+    {
+        Ids_append(resultIds, resultItems[i]);
+    }
+
+    return resultIds;
+}
+
+
+struct Ids * Ids_difference(struct Ids * theseIds, struct Ids * thoseIds)
+{
+    Error_inIdsBeforeDifference(theseIds->length, theseIds->offset);
+    Error_inIdsBeforeDifference(thoseIds->length, thoseIds->offset);
+
+    long int theseItems[theseIds->length];
+    Ids_copy(theseIds, theseItems, theseIds->length);
+
+    long int thoseItems[thoseIds->length];
+    Ids_copy(thoseIds, thoseItems, thoseIds->length);
+
+    Sorter_sort(theseItems, theseIds->length);
+    Sorter_sort(thoseItems, thoseIds->length);
+
+    long int resultLength = Differ_count(theseItems, theseIds->length, thoseItems, thoseIds->length);
+    long int resultItems[resultLength];
+    Differ_difference(theseItems, theseIds->length, thoseItems, thoseIds->length, resultItems, resultLength);
+
+    struct Ids * resultIds = Ids_construct(resultLength);
+    long int i;
+    for (i = 0; i < resultLength; i++)
+    {
+        Ids_append(resultIds, resultItems[i]);
+    }
+
+    return resultIds;
+}

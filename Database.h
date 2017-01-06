@@ -20,4 +20,8 @@ void Database_connectNodes(struct Database * database, long int fromNodeId, long
 
 struct Ids * Database_intersectNodes(struct Database * database, long int * nodeIds, long int length);
 
+struct Ids * Database_unionNodes(struct Database * database, long int * nodeIds, long int length);
+
+struct Ids * Database_differenceNodes(struct Database * database, long int * nodeIds, long int length);
+
 #endif
