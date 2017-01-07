@@ -94,7 +94,7 @@ void Error_inFileWhileCheckingNodeIdEqualsPosition(long int position, long int n
 {
     if (position != nodeId)
     {
-        fprintf(stderr, "Error_inFileWhileCheckingNodeIdEqualsPosition: %ld is not a node id.\n", nodeId);
+        fprintf(stderr, "Error_inFileWhileCheckingNodeIdEqualsPosition: %ld is not a node id at position %ld.\n", nodeId, position);
         exit(1);
     }
 }
