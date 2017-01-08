@@ -67,18 +67,19 @@ long int File_read(struct File * file, long int position)
 {
 	long int byteAddress = Address_byteAddress(file->address, position);
 
-	char bytes[file->unitSizeInBytes];
+	unsigned char bytes[file->unitSizeInBytes];
 
     fseek(file->resource, byteAddress, SEEK_SET);
     fread(bytes, 1, file->unitSizeInBytes, file->resource);
 
-    long int destination = 0 + bytes[0];
+    long int destination = 0;
     char i;
-    char byte;
-    for (i = 1; i < file->unitSizeInBytes; i++)
+    char offset;
+    char skipCount = 0;
+    for (i = 0; i < file->unitSizeInBytes; i++)
     {
-        byte = (long int)bytes[i];
-        destination = destination * 256 * i + byte;
+        offset = 8 * i;
+        destination = (destination << offset) | bytes[i];
     };
 
     return destination;
@@ -88,7 +89,7 @@ long int File_write(struct File * file, long int position, long int destination)
 {
 	long int byteAddress = Address_byteAddress(file->address, position);
 
-	char bytes[file->unitSizeInBytes];
+	unsigned char bytes[file->unitSizeInBytes];
     char i;
     char offset;
     for (i = 0; i < file->unitSizeInBytes; i++ )
