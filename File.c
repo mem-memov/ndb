@@ -51,6 +51,7 @@ void File_open(struct File * file)
         Error_inFileAfterOpening(file->resource);
     } else { // otherwise check unitsize
         long int firstDestination = File_read(file, 0);
+        printf("fd:%ld\n", firstDestination);
         Error_inFileAfterOpeningWithWrongUnitSize(firstDestination);
     }
 }
@@ -73,13 +74,29 @@ long int File_read(struct File * file, long int position)
     fread(bytes, 1, file->unitSizeInBytes, file->resource);
 
     long int destination = 0;
-    char i;
-    char offset;
-    char skipCount = 0;
+    int i;
+    int offset;
+    int skipCount = 0;
+    char nonEmptyFound = 0;
     for (i = 0; i < file->unitSizeInBytes; i++)
     {
-        offset = 8 * i;
-        destination = (destination << offset) | bytes[i];
+        if (0 == nonEmptyFound)
+        {
+            if (0 == bytes[i])
+            {
+                skipCount++;
+            }
+            else
+            {
+                nonEmptyFound = 1;
+                destination = bytes[i];
+            }
+        }
+        else
+        {
+            offset = 8 * (i - skipCount);
+            destination = (destination << offset) | bytes[i];
+        }
     };
 
     return destination;
