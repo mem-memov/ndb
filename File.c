@@ -51,7 +51,6 @@ void File_open(struct File * file)
         Error_inFileAfterOpening(file->resource);
     } else { // otherwise check unitsize
         long int firstDestination = File_read(file, 0);
-        printf("fd:%ld\n", firstDestination);
         Error_inFileAfterOpeningWithWrongUnitSize(firstDestination);
     }
 }
